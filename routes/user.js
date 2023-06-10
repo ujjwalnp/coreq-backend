@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 // const userController = require("../controller/user")
-const signupController = require('../controller/signup')
+const signupController = require('../controllers/signup')
 
 // app.post('/api/signup', async (req, res) => {
 
