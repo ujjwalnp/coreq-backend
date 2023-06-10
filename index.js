@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const userRouter = require('./routes/user')
+const cors = require('cors')
 
 // express server
 const server = express()
@@ -14,7 +15,7 @@ async function main() {
 
 // body parsers
 server.use(express.json())
-server.use('/api', userRouter.router)
+server.use('/api', cors(), userRouter.router)
 
 
 // server listen port
