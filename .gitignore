@@ -1,3 +1,4 @@
 node_modules
+.env
 routes/user1.js
 controllers/user.js
