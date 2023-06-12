@@ -1,6 +1,6 @@
-const User = require("../models/user")
+const User = require("../models/userCredentials")
 const bcrypt = require("bcrypt")
-// const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 
 // app.post('/api/login', async (req, res) => {
 
@@ -19,19 +19,12 @@ exports.loginUser = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" })
     }
-    /*
-    The token generation through JWT is remaining.. 
-    do changes according to following code template and uncomment the 'const jwt = require('jsonwebtoken')'
 
+    const token = jwt.sign({ username: req.body.email, password: req.body.password }, process.env.TOKEN_SCERECT_KEY)
+    res.status(200).json({ message: "Login successful", token})
 
-    Generate a token for authentication (using JWT)
-    const token = jwt.generateToken(user)
-
-    res.status(200).json({ message: "Login successful", token })
-    */
-
-    res.status(200).json({ message: "Login successful"})
-  } catch (error) {
+  } 
+  catch (error) {
     console.error(error)
     res.status(500).json({ message: "Server error" })
   }
