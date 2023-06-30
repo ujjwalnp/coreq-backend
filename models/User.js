@@ -22,34 +22,36 @@ const userSchema = new Schema({
       type: String,
       required: true,
     },
-    first_name: {
+    full_name: {
       type: String,
       required: true,
     },
-    last_name: {
-      type: String,
-      required: true,
+    semester: {
+      type: Number,
+      defualt: 0,
     },
     bio: {
       type: String,
+      default: null,
     },
     roll_no: {
       type: Number,
-      required: true,
+      default: 0,
     },
     faculty: {
       type: String,
-      required: true,
+      defualt: null,
     },
     batch: {
       type: Number,
-      required: true,
     },
     location: {
       type: String,
+      default: null,
     },
     profile_pic: {
       type: String,
+      default: null,
     },
     following: {
       type: Number,
