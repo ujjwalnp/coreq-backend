@@ -16,6 +16,14 @@ const commentSchema = new Schema({
 })
 
 const articleSchema = new Schema({
+    userId:{
+        type: String, 
+        required: true,
+    },
+    userFullName: {
+        type: String,
+        required: true,
+    },
     title: {
         type: String,
         required: true,
@@ -23,23 +31,22 @@ const articleSchema = new Schema({
     authors: {
         type: String,
     },
-    publication_year: {
+    publicationYear: {
         type: Number,
         defualt: 2023,
     },
-    publication_house: {
+    publicationHouse: {
         type: String,
     },
     description: {
         type: String,
     },
-    upvote: {
-        type: Number,
-        default: 0,
+    userPicturePath: {
+        type: String,
     },
-    downvote: {
-        type: Number,
-        default: 0,
+    likes: {
+        type: Map,
+        of: Boolean,
     },
     comments: [commentSchema],
     createdAt: {
@@ -48,8 +55,10 @@ const articleSchema = new Schema({
     },  
     keywords: {
         type: String,
-    },  
-})
+    }
+},
+{ timestamps: true }, 
+)
 
 const Article = mongoose.model('Article', articleSchema)
 
