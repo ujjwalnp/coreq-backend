@@ -22,7 +22,7 @@ const userSchema = new Schema({
       type: String,
       required: true,
     },
-    full_name: {
+    fullName: {
       type: String,
       required: true,
     },
@@ -34,7 +34,7 @@ const userSchema = new Schema({
       type: String,
       default: null,
     },
-    roll_no: {
+    rollNo: {
       type: Number,
       default: 0,
     },
@@ -49,7 +49,7 @@ const userSchema = new Schema({
       type: String,
       default: null,
     },
-    profile_pic: {
+    profilePic: {
       type: String,
       default: null,
     },
@@ -65,11 +65,21 @@ const userSchema = new Schema({
       type: Number,
       default: 0,
     },
-    join_date: {
+    joinDate: {
       type: Date,
       default: Date.now
     }
   })
+
+  // const virtual = userSchema.virtual('userId')
+  // virtual.get(function(){
+  //   return this._id
+  // })
+  // userSchema.set('toJSON', {
+  //   virtuals: true,
+  //   versionKey: false,
+  //   transform: function (doc, ret) { delete ret._id}
+  // })
   
   const User = mongoose.model('User', userSchema)
   
