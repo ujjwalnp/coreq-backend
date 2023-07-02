@@ -65,7 +65,7 @@ exports.getUserArticles = async(req, res)=>{
     }
 }
 
-/* UPDATE ARTICLE */ -- This feature is still under development
+/* UPDATE ARTICLE  -- This feature is still under development */
 exports.likeArticle = async(req, res)=>{
     try {
         const { id } = req.paramas
