@@ -2,22 +2,21 @@ const UserModel = require("../models/User")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-// signup
+/* SIGNUP */
 exports.createUser = async (req, res) => {
   const {
     username,
     email,
     password,
-    full_name,
+    fullName,
     semester,
     bio,
-    roll_no,
+    rollNo,
     faculty,
     batch,
     location,
-    profile_pic,
+    profilePic,
   } = req.body
-  // Perform validation checks using express-validator or other validation libraries
 
   try {
     // Check if the username or email is already registered
@@ -38,19 +37,19 @@ exports.createUser = async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      full_name,
+      fullName,
       semester,
       bio,
-      roll_no,
+      rollNo,
       faculty,
       batch,
       location,
-      profile_pic,
+      profilePic,
     })
 
     try {
       await newUser.save()
-      res.status(201).json({ message: "User registered successfully" })
+      res.status(201).json({ newUser, message: "User registered successfully" })
     } catch (error) {
       console.error(error)
       res.status(500).json({ message: "Something went wrong" })
@@ -61,7 +60,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-// login
+/* LOGIN */
 exports.loginUser = async (req, res) => {
   const { username, email, password } = req.body
 
@@ -69,12 +68,14 @@ exports.loginUser = async (req, res) => {
     // Check if the user exists
     const user = await UserModel.findOne({ $or: [{ username }, { email }] })
     if (!user) {
+        console.log('user not found')
       return res.status(404).json({ message: "User not found" })
     }
 
     // Compare the provided password with the stored hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password)
     if (!isPasswordValid) {
+        console.log('invalid password')
       return res.status(401).json({ message: "Invalid password" })
     }
 
@@ -82,14 +83,14 @@ exports.loginUser = async (req, res) => {
     req.session.userId = user._id
 
     const token = jwt.sign(
-      { username: user.username, password: user.password },
-      process.env.TOKEN_SCERECT_KEY
-    );
+      { id: user.userId, username: user.username, password: user.password },
+      process.env.JWT_SECRET
+    )
 
     // Set the session ID as a cookie
     res.cookie("sessionId", req.sessionID, {
       httpOnly: true,
-      // You can set other cookie options here if needed
+      // other cookie option(s)
     });
 
     console.log('login success')
@@ -100,7 +101,7 @@ exports.loginUser = async (req, res) => {
   }
 }
 
-// logout
+/* LOGOUT */
 exports.logoutUser = (req, res) => {
     // Destroy the session and clear the session cookie
     req.session.destroy()
