@@ -4,6 +4,7 @@ const { Schema } = mongoose
 const commentSchema = new Schema({
     text: {
         type: String,
+        required: true,
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
@@ -13,11 +14,13 @@ const commentSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-})
+},
+{ timestamps: true },
+)
 
 const articleSchema = new Schema({
     userId:{
-        type: String, 
+        type: String,   
         required: true,
     },
     userFullName: {

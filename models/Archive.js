@@ -13,9 +13,19 @@ const commentSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-})
+},
+{ timestamps: true },
+)
 
 const archiveSchema = new Schema({
+    userId:{
+        type: String, 
+        required: true,
+    },
+    userFullName: {
+        type: String,
+        required: true,
+    },
     title: {
         type: String,
         required: true,

@@ -4,6 +4,7 @@ const { Schema } = mongoose
 const commentSchema = new Schema({
     text: {
         type: String,
+        required: true,
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
@@ -13,9 +14,19 @@ const commentSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-})
+},
+{ timestamps: true },
+)
 
 const projectSchema = new Schema({
+    userId:{
+        type: String, 
+        required: true,
+    },
+    userFullName: {
+        type: String,
+        required: true,
+    },
     title: {
         type: String,
         required: true,
@@ -45,7 +56,9 @@ const projectSchema = new Schema({
     keywords: {
         type: String,
     },  
-})
+},
+{ timestamps: true },
+)
 
 const Project = mongoose.model('Project', projectSchema)
 
