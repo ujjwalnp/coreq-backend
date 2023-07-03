@@ -49,7 +49,7 @@ exports.getAllArchives = async(req, res)=>{
     }
 }
 
-exports.getUserArchive = async(req, res)=>{
+exports.getUserArchives = async(req, res)=>{
     // parse userId from url
     const userId = req.params.userId
 
