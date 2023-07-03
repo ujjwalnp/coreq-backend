@@ -94,7 +94,7 @@ exports.loginUser = async (req, res) => {
     });
 
     console.log('login success')
-    res.status(200).json({ message: "Login successful", token })
+    res.status(200).json({ token,userId: user._id, message: "Login successful" })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: "Server error" })
