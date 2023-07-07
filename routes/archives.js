@@ -5,8 +5,11 @@ const { verifyToken } = require('../middlewares/auth')
 
 // READ ARCHIVES
 router.get('/', verifyToken, archiveController.getAllArchives)
-router.get('/:userId', verifyToken, archiveController.getUserArchives)
+router.get('/user/:userId', verifyToken, archiveController.getUserArchives)
 // router.get('/:userId/archives')
+
+// GET specific archive
+.get('/:archiveId', verifyToken, archiveController.getSpecificArchive)
 
 // CREATE ARCHIVE
 router.post('/', verifyToken, archiveController.createArchive)
