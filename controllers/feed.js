@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const Article = require('../models/Article')
 const Archive = require('../models/Archive')
 const Project = require('../models/Project')
@@ -47,15 +48,14 @@ exports.getFeed = async(req, res)=>{
 
 exports.getFriendSuggestions = async (req, res) => {
     try {
-      const { userId } = req.params.userId
+      const userId = req.params.userId;
+      const objectId = new mongoose.Types.ObjectId(userId);
 
       // Select 3 random users using the $sample aggregation operator
-      const selectedUsers = await User.aggregate([ { $sample: { size: 3 } },
-        {
-          $match: {
-            userId: { $ne: userId }     // ignored own profile details
-          }
-        }]);
+      const selectedUsers = await User.aggregate([
+        { $match: { _id: { $ne: objectId } } }, // ignored own profile details
+        { $sample: { size: 3 } }
+      ]);
   
       res.status(200).json(selectedUsers);
     } catch (error) {
