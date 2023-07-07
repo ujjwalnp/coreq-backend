@@ -6,6 +6,8 @@ const artcileRouter = require('./routes/articles')
 const projectRouter = require('./routes/projects')
 const archiveRouter = require('./routes/archives')
 const queryRouter = require('./routes/queries')
+const usersRouter = require('./routes/users')
+const feedRouter = require('./routes/feed')
 const cors = require("cors")
 const session = require("express-session")
 const cookieParser = require("cookie-parser")
@@ -62,6 +64,8 @@ server.use('/article', artcileRouter.router)
 server.use('/project', projectRouter.router)
 server.use('/archive', archiveRouter.router)
 server.use('/query', queryRouter.router)
+server.use('/user', usersRouter.router)
+server.use('/feed', feedRouter.router)
 
 /* SERVER LISTEN */
 server.listen(process.env.SERVER_PORT, () => {
