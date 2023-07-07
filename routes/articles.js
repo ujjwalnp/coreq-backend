@@ -6,8 +6,11 @@ const { verifyToken } = require('../middlewares/auth')
 router
 /* READ ARTICLES */
 .get('/', verifyToken, articleController.getAllArticles)
-.get('/:userId', verifyToken, articleController.getUserArticles)
+.get('/user/:userId', verifyToken, articleController.getUserArticles)
 // router.get('/:userId/articles')
+
+// GET specific article
+.get('/:articleId', verifyToken, articleController.getSpecificArticle)
 
 /* CREATE ARTICLE */
 .post('/', verifyToken, articleController.createArticle)
