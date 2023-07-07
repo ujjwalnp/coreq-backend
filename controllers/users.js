@@ -35,22 +35,3 @@ exports.getUserDetails = async(req, res) => {
 }
 
 
-exports.getFriendSuggestions = async (req, res) => {
-    try {
-      // Get the count of all users in the database
-      const totalCount = await User.countDocuments();
-  
-      // Select 3 random users using the $sample aggregation operator
-      const selectedUsers = await User.aggregate([{ $sample: { size: 3 } }]);
-  
-      res.status(200).json(selectedUsers);
-    } catch (error) {
-      res.status(404).json({ message: error.message });
-    }
-  };
-
-// Utility function to select random elements from an array
-function getRandomElements(array, count) {
-    const shuffled = array.sort(() => 0.5 - Math.random())
-    return shuffled.slice(0, count)
-  }
