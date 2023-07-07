@@ -34,6 +34,14 @@ const querySchema = new Schema({
     description: {
         type: String,
     },
+    upvote: {
+        type: Number,
+        default: 0,
+    },
+    downvote: {
+        type: Number,
+        default: 0,
+    },
     comments: [commentSchema],
     createdAt: {
         type: Date,
