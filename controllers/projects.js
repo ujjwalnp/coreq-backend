@@ -41,7 +41,7 @@ exports.createProject = async(req, res)=>{
 exports.getAllProjects = async(req, res)=>{
     try {
         // get all the projects from database
-        const projects = await Project.find()
+        const projects = await Project.find().sort({ updatedAt: -1 }).exec()
         res.status(200).json(projects)
     }
     catch(error) {
@@ -56,13 +56,26 @@ exports.getUserProjects = async(req, res)=>{
     console.log(userId)
     try {
         // get the project(s) of specific userId
-        const projects = await Project.find({ userId })
+        const projects = await Project.find({ userId }).sort({ updatedAt: -1 }).exec()
         res.status(200).json(projects)
     }
     catch(error) {
         res.status(404).json({ message: error.message })
     }
 }
+
+exports.getRecommendProjects = async(req, res)=>{
+    try {
+        // select random projects
+        const recommendedProjects = await Project.aggregate([ { $sample: { size: 3 } }])
+
+        res.status(200).json(recommendedProjects)
+    }
+    catch(error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 
 /* UPDATE PROJECT  -- This feature is still under development */
 

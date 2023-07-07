@@ -38,7 +38,7 @@ exports.createQuery = async(req, res)=>{
 exports.getAllQueries = async(req, res)=>{
     try {
         // get all the queries from database
-        const queries = await Query.find()
+        const queries = await Query.find().sort({ updatedAt: -1 }).exec()
         res.status(200).json(queries)
     }
     catch(error) {
@@ -53,7 +53,7 @@ exports.getUserQueries = async(req, res)=>{
     console.log(userId)
     try {
         // get the query(s) of specific userId
-        const queries = await Query.find({ userId })
+        const queries = await Query.find({ userId }).sort({ updatedAt: -1 }).exec()
         res.status(200).json(queries)
     }
     catch(error) {

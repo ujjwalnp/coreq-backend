@@ -42,7 +42,7 @@ exports.createArticle = async(req, res)=>{
 exports.getAllArticles = async(req, res)=>{
     try {
         // get all the articles from database
-        const articles = await Article.find()
+        const articles = await Article.find().sort({ updatedAt: -1 }).exec()
         res.status(200).json(articles)
     }
     catch(error) {
@@ -57,8 +57,20 @@ exports.getUserArticles = async(req, res)=>{
     console.log(userId)
     try {
         // get the article(s) of specific userId
-        const articles = await Article.find({ userId })
+        const articles = await Article.find({ userId }).sort({ updatedAt: -1 }).exec()
         res.status(200).json(articles)
+    }
+    catch(error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
+exports.getRecommendArticles = async(req, res)=>{
+    try {
+        // select random articles
+        const recommendedArticles = await Article.aggregate([ { $sample: { size: 3 } }])
+
+        res.status(200).json(recommendedArticles)
     }
     catch(error) {
         res.status(404).json({ message: error.message })
