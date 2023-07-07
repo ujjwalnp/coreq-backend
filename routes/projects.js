@@ -5,8 +5,11 @@ const { verifyToken } = require('../middlewares/auth')
 
 // READ PROJECTS
 router.get('/', verifyToken, projectController.getAllProjects)
-router.get('/:userId', verifyToken, projectController.getUserProjects)
+router.get('/user/:userId', verifyToken, projectController.getUserProjects)
 // router.get('/:userId/projects')
+
+// GET specific archive
+.get('/:projectId', verifyToken, projectController.getSpecificProject)
 
 // CREATE PROJECT
 router.post('/', verifyToken, projectController.createProject)
