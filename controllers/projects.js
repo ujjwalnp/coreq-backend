@@ -14,6 +14,7 @@ exports.createProject = async(req, res)=>{
         const newProject = new Project({
             userId,
             userFullName: user.fullName,
+            username: user.username,
             title,
             collabrators,
             team,
@@ -62,6 +63,20 @@ exports.getUserProjects = async(req, res)=>{
     catch(error) {
         res.status(404).json({ message: error.message })
     }
+}
+
+exports.getSpecificProject = async(req, res)=>{
+    // parse projectId  from request body or query params
+    const projectId = req.params.projectId
+
+    try {
+        const project = await Project.findById(projectId)
+        res.status(200).json(project)
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+
 }
 
 exports.getRecommendProjects = async(req, res)=>{

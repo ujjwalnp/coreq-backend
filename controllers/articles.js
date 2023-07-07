@@ -4,6 +4,7 @@ const User = require('../models/User')
 /* CREATE ARTICLE */
 exports.createArticle = async(req, res)=>{
     try{
+        console.log('here')
         // parse data from body
         const { userId, title, description, authors, publicationYear, publicationHouse, keywords } = req.body
         
@@ -14,6 +15,7 @@ exports.createArticle = async(req, res)=>{
         const newArticle = new Article({
             userId,
             userFullName: user.fullName,
+            username: user.username,
             title,
             description,
             authors,
@@ -54,7 +56,6 @@ exports.getUserArticles = async(req, res)=>{
     // parse userId from url
     const userId = req.params.userId
 
-    console.log(userId)
     try {
         // get the article(s) of specific userId
         const articles = await Article.find({ userId }).sort({ updatedAt: -1 }).exec()
@@ -63,6 +64,20 @@ exports.getUserArticles = async(req, res)=>{
     catch(error) {
         res.status(404).json({ message: error.message })
     }
+}
+
+exports.getSpecificArticle = async(req, res)=>{
+    // parse articleId  from request body or query params
+    const articleId = req.params.articleId
+
+    try {
+        const article = await Article.findById(articleId)
+        res.status(200).json(article)
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+
 }
 
 exports.getRecommendArticles = async(req, res)=>{

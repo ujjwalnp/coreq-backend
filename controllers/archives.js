@@ -14,6 +14,7 @@ exports.createArchive = async(req, res)=>{
         const newArchive = new Archive({
             userId,
             userFullName: user.fullName,
+            username: user.username,
             title,
             collabrators,
             team,
@@ -62,6 +63,20 @@ exports.getUserArchives = async(req, res)=>{
     catch(error) {
         res.status(404).json({ message: error.message })
     }
+}
+
+exports.getSpecificArchive = async(req, res)=>{
+    // parse archiveId  from request body or query params
+    const archiveId = req.params.archiveId
+
+    try {
+        const archive = await Archive.findById(archiveId)
+        res.status(200).json(archive)
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+
 }
 
 /* UPDATE ARCHIVE  -- This feature is still under development */

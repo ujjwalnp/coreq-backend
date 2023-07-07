@@ -14,6 +14,7 @@ exports.createQuery = async(req, res)=>{
         const newQuery = new Query({
             userId,
             userFullName: user.fullName,
+            username: user.username,
             title,
             description,
             votes: {},

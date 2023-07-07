@@ -22,6 +22,10 @@ const archiveSchema = new Schema({
         type: String, 
         required: true,
     },
+    username: {
+        type: String,
+        required: true,
+    },
     userFullName: {
         type: String,
         required: true,
