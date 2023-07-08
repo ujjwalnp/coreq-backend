@@ -1,86 +1,110 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      validate: {
-        validator: function (value) {
-          // Check if the email ends with '@cosmoscollege.edu.np'
-          return value.endsWith('@cosmoscollege.edu.np');
-        },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: function (value) {
+        // Check if the email ends with '@cosmoscollege.edu.np'
+        return value.endsWith("@cosmoscollege.edu.np");
       },
     },
-    password: {
-      type: String,
-      required: true,
-    },
-    fullName: {
-      type: String,
-      required: true,
-    },
-    semester: {
-      type: Number,
-      defualt: 0,
-    },
-    bio: {
-      type: String,
-      default: null,
-    },
-    rollNo: {
-      type: Number,
-      default: 0,
-    },
-    faculty: {
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  fullName: {
+    type: String,
+    required: true,
+  },
+  semester: {
+    type: Number,
+    defualt: 0,
+  },
+  bio: {
+    type: String,
+    default: null,
+  },
+  rollNo: {
+    type: Number,
+    default: 0,
+  },
+  faculty: {
+    type: String,
+    defualt: null,
+  },
+  batch: {
+    type: Number,
+  },
+  location: {
+    type: String,
+    default: null,
+  },
+  socialNames: {
+    github: {
       type: String,
       defualt: null,
     },
-    batch: {
-      type: Number,
-    },
-    location: {
+    linkedin: {
       type: String,
-      default: null,
+      defualt: null,
     },
-    profilePic: {
+    facebook: {
       type: String,
-      default: null,
+      defualt: null,
     },
-    following: {
-      type: Number,
-      default: 0,
+    twitter: {
+      type: String,
+      defualt: null,
     },
-    followers: {
-      type: Number,
-      default: 0,
+    instagram: {
+      type: String,
+      defualt: null,
     },
-    popularity: {
-      type: Number,
-      default: 0,
-    },
-    joinDate: {
-      type: Date,
-      default: Date.now
-    }
-  })
+  },
+  profilePic: {
+    type: String,
+    default: null,
+  },
+  coverPic: {
+    type: String,
+    default: null,
+  },
+  following: {
+    type: Number,
+    default: 0,
+  },
+  followers: {
+    type: Number,
+    default: 0,
+  },
+  popularity: {
+    type: Number,
+    default: 0,
+  },
+},
+  { timestamps: true }
+);
 
-  // const virtual = userSchema.virtual('userId')
-  // virtual.get(function(){
-  //   return this._id
-  // })
-  // userSchema.set('toJSON', {
-  //   virtuals: true,
-  //   versionKey: false,
-  //   transform: function (doc, ret) { delete ret._id}
-  // })
-  
-  const User = mongoose.model('User', userSchema)
-  
-  module.exports = User
+// const virtual = userSchema.virtual('userId')
+// virtual.get(function(){
+//   return this._id
+// })
+// userSchema.set('toJSON', {
+//   virtuals: true,
+//   versionKey: false,
+//   transform: function (doc, ret) { delete ret._id}
+// })
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
