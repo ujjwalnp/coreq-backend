@@ -91,6 +91,21 @@ exports.getRecommendProjects = async(req, res)=>{
     }
 }
 
+exports.countUserProjects = async(req, res)=>{
+    try {
+        // parse userId from url
+        const userId = req.params.userId
+
+        // count the number of projects of specific userId
+        const count = await Project.countDocuments({ userId }).exec()
+
+        res.status(200).json(count)
+    }
+    catch(error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 
 /* UPDATE PROJECT  -- This feature is still under development */
 

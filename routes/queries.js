@@ -7,6 +7,7 @@ const { verifyToken } = require('../middlewares/auth')
 router.get('/', verifyToken, queryController.getAllQueries)
 router.get('/:userId', verifyToken, queryController.getUserQueries)
 // router.get('/:userId/projects')
+.get('/user/:userId/countQueries', verifyToken, queryController.countUserQueries)
 
 // CREATE QUERY
 router.post('/', verifyToken, queryController.createQuery)

@@ -79,6 +79,21 @@ exports.getSpecificArchive = async(req, res)=>{
 
 }
 
+exports.countUserArchives = async(req, res)=>{
+    try {
+        // parse userId from url
+        const userId = req.params.userId
+
+        // count the number of archive of specific userId
+        const count = await Archive.countDocuments({ userId }).exec()
+
+        res.status(200).json(count)
+    }
+    catch(error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 /* UPDATE ARCHIVE  -- This feature is still under development */
 
 

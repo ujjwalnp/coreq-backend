@@ -7,6 +7,7 @@ const { verifyToken } = require('../middlewares/auth')
 router.get('/', verifyToken, archiveController.getAllArchives)
 router.get('/user/:userId', verifyToken, archiveController.getUserArchives)
 // router.get('/:userId/archives')
+.get('/user/:userId/countArchives', verifyToken, archiveController.countUserArchives)
 
 // GET specific archive
 .get('/:archiveId', verifyToken, archiveController.getSpecificArchive)

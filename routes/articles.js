@@ -8,6 +8,7 @@ router
 .get('/', verifyToken, articleController.getAllArticles)
 .get('/user/:userId', verifyToken, articleController.getUserArticles)
 // router.get('/:userId/articles')
+.get('/user/:userId/countArticles', verifyToken, articleController.countUserArticles)
 
 // GET specific article
 .get('/:articleId', verifyToken, articleController.getSpecificArticle)

@@ -92,6 +92,21 @@ exports.getRecommendArticles = async(req, res)=>{
     }
 }
 
+exports.countUserArticles = async(req, res)=>{
+    try {
+        // parse userId from url
+        const userId = req.params.userId
+
+        // count the number of articles of specific userId
+        const count = await Article.countDocuments({ userId }).exec()
+
+        res.status(200).json(count)
+    }
+    catch(error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 /* UPDATE ARTICLE  -- This feature is still under development */
 exports.likeArticle = async(req, res)=>{
     try {
