@@ -5,7 +5,7 @@ const { verifyToken } = require('../middlewares/auth')
 
 // READ QUERIES
 router.get('/', verifyToken, queryController.getAllQueries)
-router.get('/:userId', verifyToken, queryController.getUserQueries)
+router.get('/user/:userId', verifyToken, queryController.getUserQueries)
 // router.get('/:userId/projects')
 .get('/user/:userId/countQueries', verifyToken, queryController.countUserQueries)
 
