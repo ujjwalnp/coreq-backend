@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const User = require('../models/User')
 
 /* CREATE API */
+// Follow / Unfollw Feature
 exports.followUser = async(req, res) => {
     try {
         const userId = new mongoose.Types.ObjectId(req.params.userId)
@@ -17,27 +18,30 @@ exports.followUser = async(req, res) => {
             return res.status(404).json({ message: 'User not found' })
         }
         if (!followingUser) {
-            return res.status(404).json({ message: 'Following user not found' });
+            return res.status(404).json({ message: 'Following user not found' })
         }
 
         // Check whether already follows or requested for follow before adding it again
         const alreadyFollows = user.following.find((following) => following.followingId.toString() === followingId.toString())
-        console.log(alreadyFollows)
         if (alreadyFollows) {
-            // If already follows, return a 400 response
-            return res.status(400).json({ message: 'Already follows' })
+            if (alreadyFollows.isFollowing){
+                // If already follows, update the isFollwing value to false
+                alreadyFollows.isFollowing = false;
+                await user.save()
+                return res.status(200).json({ message: 'User UnFollowed successfully' })
+            }
+            else {
+                // Update the isFollowing value to true
+                alreadyFollows.isFollowing = true;
+                await user.save()
+                return res.status(200).json({ message: 'User followed successfully' })
+            }
         }
-
-        // Check the user is followed by followingId or not
-        const isFollower = followingUser.following.find((following) => following.followingId.toString() === userId.toString())
-
-        // Set variable based on isFollower value
-        const isFollowerValue = isFollower ? true : false; 
 
         // Create a new following object
         const followingObject = {
             followingId: followingId,
-            isFollower: isFollowerValue,
+            isFollowing: true,
         }
     
         // Push the following object to the user's following array
