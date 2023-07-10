@@ -47,10 +47,11 @@ const querySchema = new Schema({
         default: 0,
     },
     comments: [commentSchema],
-    createdAt: {
-        type: Date,
-        default: Date.now,
+    tag: {
+        type: String,
+        default: 'Query',
     },
+
 },
 { timestamps: true },
 )

@@ -59,6 +59,10 @@ const archiveSchema = new Schema({
     keywords: {
         type: String,
     },
+    tag: {
+        type: String,
+        default: 'Archive',
+    },
 })
 
 const Archive = mongoose.model('Archive', archiveSchema)

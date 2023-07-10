@@ -59,7 +59,11 @@ const projectSchema = new Schema({
     },  
     keywords: {
         type: String,
-    },  
+    },
+    tag: {
+        type: String,
+        default: 'Project',
+    }, 
 },
 { timestamps: true },
 )

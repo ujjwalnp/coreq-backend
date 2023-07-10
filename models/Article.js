@@ -62,7 +62,11 @@ const articleSchema = new Schema({
     },  
     keywords: {
         type: String,
-    }
+    },
+    tag: {
+        type: String,
+        default: 'Article',
+    },
 },
 { timestamps: true }, 
 )
