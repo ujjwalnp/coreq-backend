@@ -6,6 +6,13 @@ const { verifyToken } = require('../middlewares/auth')
 router
 /* GET USERDETAILS */
     .get('/get/:userId', verifyToken, userController.getUserDetails)
+    .get('/get/:userId/followings', verifyToken, userController.getUserFollowings)
+    .get('/get/:userId/followers', verifyToken, userController.getUserFollowers)
+    .get('/get/:userId/isFollower', verifyToken, userController.isFollower)
+
+/* FOLLOW USER */
+    .post('/follow/:userId', verifyToken, userController.followUser)
+    /* UNFOLLOW USER */
 
 /* UPDATE USERDETAILS */
     // editProfile

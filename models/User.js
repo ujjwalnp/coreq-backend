@@ -1,6 +1,19 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const userFollowingSchema = new Schema({
+  followingId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+
+  },
+  isFollower: {
+    type: Boolean,
+  },
+},
+{timestamps: true},
+)
+
 const userSchema = new Schema({
   username: {
     type: String,
@@ -79,10 +92,12 @@ const userSchema = new Schema({
     type: String,
     default: null,
   },
-  following: {
-    type: Number,
-    default: 0,
-  },
+  // following: {
+  //   type: Number,
+  //   default: 0,
+  // },
+
+  following: [userFollowingSchema],
   followers: {
     type: Number,
     default: 0,
