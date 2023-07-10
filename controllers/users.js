@@ -28,13 +28,13 @@ exports.followUser = async(req, res) => {
                 // If already follows, update the isFollwing value to false
                 alreadyFollows.isFollowing = false;
                 await user.save()
-                return res.status(200).json({ message: 'User UnFollowed successfully' })
+                return res.status(200).json({ isFollowing: false, message: 'User UnFollowed successfully' })
             }
             else {
                 // Update the isFollowing value to true
                 alreadyFollows.isFollowing = true;
                 await user.save()
-                return res.status(200).json({ message: 'User followed successfully' })
+                return res.status(200).json({ isFollowing: true, message: 'User followed successfully' })
             }
         }
 
@@ -48,7 +48,7 @@ exports.followUser = async(req, res) => {
         user.following.push(followingObject);
         await user.save();
 
-        res.status(200).json({ message: 'User followed successfully' })
+        res.status(200).json({ isFollowing: true, message: 'User followed successfully' })
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -117,55 +117,82 @@ exports.getUserFollowings = async(req, res) => {
     }
 }
 
+exports.isFollowing = async(req, res) => {
+    try {
+        const userId = new mongoose.Types.ObjectId(req.params.userId)
+        const followingId = new mongoose.Types.ObjectId(req.body.followingId)
+
+        const user = await User.findById(userId)
+  
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' })
+        }
+
+        const isFollowing = user.following.find((following) => following.followingId.toString() === followingId.toString())
+
+        if (isFollowing) {
+            if (isFollowing.isFollowing) {
+                return res.status(200).json({ isFollowing: true })
+            }
+            else {
+                return res.status(200).json({ isFollowing: false })
+            }
+        }
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 exports.isFollower = async (req, res) => {
     try {
-      const userId = new mongoose.Types.ObjectId(req.params.userId);
-      const followingId = new mongoose.Types.ObjectId(req.body.followingId);
+      const userId = new mongoose.Types.ObjectId(req.params.userId)
+      const followingId = new mongoose.Types.ObjectId(req.body.followingId)
   
-      const user = await User.findById(followingId);
+      const user = await User.findById(followingId)
   
       if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(404).json({ message: 'User not found' })
       }
   
       const isFollower = user.following.some(
         (following) => following.followingId.toString() === userId.toString()
-      );
+      )
   
-      res.status(200).json({ isFollower });
+      res.status(200).json({ isFollower })
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message })
     }
-  };
+  }
   
 
 
 exports.getUserFollowers = async (req, res) => {
     try {
-      const userId = new mongoose.Types.ObjectId(req.params.userId);
+      const userId = new mongoose.Types.ObjectId(req.params.userId)
   
-      const user = await User.findById(userId);
+      const user = await User.findById(userId)
   
       if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(404).json({ message: 'User not found' })
       }
   
       // Get an array of followerIds
-      const followerIds = await User.find({ 'following.followingId': userId }, '_id');
+      const followerIds = await User.find({ 'following.followingId': userId }, '_id')
   
       // Fetch the details of followerIds from the User collection
       const followerDetails = await User.find(
         { _id: { $in: followerIds } },
         'username fullName'
-      );
+      )
   
-      const followerCount = followerIds.length;
+      const followerCount = followerIds.length
   
-      res.status(200).json({ followerDetails, followerCount });
+      res.status(200).json({ followerDetails, followerCount })
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message })
     }
-  };
+  }
 
 
 /* UPDATE API */
