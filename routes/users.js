@@ -16,6 +16,6 @@ router
 
 /* UPDATE USERDETAILS */
     // editProfile
-    .patch('/editProfile/:userId', userController.editProfile);
+    .patch('/editProfile/:userId', verifyToken, userController.editProfile);
 
 exports.router = router

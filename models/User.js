@@ -7,7 +7,7 @@ const userFollowingSchema = new Schema({
     ref: 'User',
 
   },
-  isFollower: {
+  isFollowing: {
     type: Boolean,
   },
 },
@@ -92,16 +92,7 @@ const userSchema = new Schema({
     type: String,
     default: null,
   },
-  // following: {
-  //   type: Number,
-  //   default: 0,
-  // },
-
   following: [userFollowingSchema],
-  followers: {
-    type: Number,
-    default: 0,
-  },
   popularity: {
     type: Number,
     default: 0,

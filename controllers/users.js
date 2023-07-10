@@ -172,7 +172,6 @@ exports.editProfile = async(req, res) => {
     try {
         // get the user of specific userId
         const user = await User.findById(userId).select('-email')
-
         if (!user) {
             // If no user found with the given userId, return a 404 response
             return res.status(404).json({ message: 'User not found' })
@@ -204,9 +203,9 @@ exports.editProfile = async(req, res) => {
         }
     
         // Update batch if available and not empty/whitespace
-        if (req.body.batch && typeof req.body.batch === 'number') {
-            user.batch = req.body.batch
-        }
+        if (req.body.batch && !isNaN(req.body.batch)) {
+            user.batch = Number(req.body.batch);
+          }
     
         // Update faculty if available and not empty/whitespace
         if (req.body.faculty && req.body.faculty.trim() !== '') {
@@ -253,6 +252,7 @@ exports.editProfile = async(req, res) => {
     
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
             user.password = hashedPassword
+            await user.save()
             return res.status(200).json({ message: 'Password updated Successfully' })
         }
 
@@ -262,6 +262,6 @@ exports.editProfile = async(req, res) => {
         res.status(200).json({ message: 'Profile updated successfully' })        
     }
     catch (error) {
-        res.status(204).json({ message: error.message })
+        res.status(500).json({ message: error.message })
     }
 }
