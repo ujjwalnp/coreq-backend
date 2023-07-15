@@ -82,19 +82,28 @@ exports.countUserQueries = async(req, res)=>{
 /* DELETE QUERY */
 exports.deleteQuery = async(req, res)=>{
     try {
-        // parse query's id from url
-        const id = req.params.id
+        // parse archive's id from url
+        const userId = req.params.userId
+        const { id } = req.body
         
         try {
-            // delete the article of specific id
-            const deletedQuery = await Article.findOneAndDelete({ _id: id }).exec()
+            // delete the archive of specific id
+            const deletedQuery = await Archive.findOneAndDelete({ 
+                _id: id,
+                userId: userId
+            }).exec()
+
+            if (!deletedQuery) {
+                return res.status(404).json({ message: "Article not found." });
+            }
+
             res.status(200).json(deletedQuery)
         }
         catch(error) {
-            res.status(404).json({ message: error.message })
+            res.status(500).json({ message: error.message })
         }
     }   
     catch(error) {
-        res.status(404).json({ message: error.message })
+        res.status(400).json({ message: error.message })
     }
 }

@@ -16,7 +16,7 @@ router.post('/', verifyToken, queryController.createQuery)
 // router.patch('/:id/like', verifyToken, queryController.likeQuery)     // upvote & downvote
 
 // DELETE QUERY
-router.delete('/:id', verifyToken, queryController.deleteQuery)
+router.delete('/user/:userId', verifyToken, queryController.deleteQuery)
 
 
 exports.router = router

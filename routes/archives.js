@@ -19,7 +19,7 @@ router.post('/', verifyToken, archiveController.createArchive)
 // router.patch('/:id/like', verifyToken, archiveController.likeArchive)     // upvote & downvote
 
 // DELETE ARCHIVE
-router.delete('/:id', verifyToken, archiveController.deleteArchive)
+router.delete('/user/:userId', verifyToken, archiveController.deleteArchive)
 
 
 exports.router = router

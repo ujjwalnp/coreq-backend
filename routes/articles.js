@@ -20,7 +20,7 @@ router
 .patch('/:id/like', verifyToken, articleController.likeArticle)     // upvote & downvote
 
 /* DELETE ARTICLE */
-.delete('/:id', verifyToken, articleController.deleteArticle)
+.delete('/user/:userId', verifyToken, articleController.deleteArticle)
 
 
 exports.router = router

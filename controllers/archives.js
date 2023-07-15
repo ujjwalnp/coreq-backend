@@ -101,18 +101,27 @@ exports.countUserArchives = async(req, res)=>{
 exports.deleteArchive = async(req, res)=>{
     try {
         // parse archive's id from url
-        const id = req.params.id
+        const userId = req.params.userId
+        const { id } = req.body
         
         try {
             // delete the archive of specific id
-            const deletedArchive = await Archive.findOneAndDelete({ _id: id }).exec()
+            const deletedArchive = await Archive.findOneAndDelete({ 
+                _id: id,
+                userId: userId
+            }).exec()
+
+            if (!deletedArchive) {
+                return res.status(404).json({ message: "Archive not found." });
+            }
+
             res.status(200).json(deletedArchive)
         }
         catch(error) {
-            res.status(404).json({ message: error.message })
+            res.status(500).json({ message: error.message })
         }
     }   
     catch(error) {
-        res.status(404).json({ message: error.message })
+        res.status(400).json({ message: error.message })
     }
 }

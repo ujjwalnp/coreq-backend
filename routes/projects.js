@@ -19,7 +19,7 @@ router.post('/', verifyToken, projectController.createProject)
 // router.patch('/:id/like', verifyToken, projectController.likeArticle)     // upvote & downvote
 
 // DELETE PROJECT
-router.delete('/:id', verifyToken, projectController.deleteProject)
+router.delete('/user/:userId', verifyToken, projectController.deleteProject)
 
 
 exports.router = router

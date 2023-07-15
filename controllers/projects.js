@@ -112,19 +112,28 @@ exports.countUserProjects = async(req, res)=>{
 /* DELETE PROJECT */
 exports.deleteProject = async(req, res)=>{
     try {
-        // parse project's id from url
-        const id = req.params.id
+        // parse archive's id from url
+        const userId = req.params.userId
+        const { id } = req.body
         
         try {
-            // delete the project of specific id
-            const deletedProject = await Project.findOneAndDelete({ _id: id }).exec()
+            // delete the archive of specific id
+            const deletedProject = await Archive.findOneAndDelete({ 
+                _id: id,
+                userId: userId
+            }).exec()
+
+            if (!deletedProject) {
+                return res.status(404).json({ message: "Article not found." });
+            }
+
             res.status(200).json(deletedProject)
         }
         catch(error) {
-            res.status(404).json({ message: error.message })
+            res.status(500).json({ message: error.message })
         }
     }   
     catch(error) {
-        res.status(404).json({ message: error.message })
+        res.status(400).json({ message: error.message })
     }
 }
