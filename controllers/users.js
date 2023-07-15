@@ -98,19 +98,21 @@ exports.getUserFollowings = async(req, res) => {
             return res.status(404).json({ message: 'User not found' })
         }
 
-        // Get an array of followingIds
-        const followingIds = user.following.map((following) => following.followingId)
-        
-        // finding length of followingIds to determine total no of following
-        const followingIdsArrayLength = followingIds.length
+        // Get an array of followingIds with isFollowing === true
+        const followingIds = user.following
+        .filter((following) => following.isFollowing)
+        .map((following) => following.followingId);
+
+        // Get the count of followingIds
+        const followingCount = followingIds.length;
 
         // Fetch the details of followingIds from the User collection
         const followingDetails = await User.find(
             { _id: { $in: followingIds } },
             'username fullName'
-        )
+        );
 
-        res.status(200).json({ followingDetails, followingCount: followingIdsArrayLength })
+        res.status(200).json({ followingDetails, followingCount });
     }
     catch (error) {
         res.status(404).json({ message: error.message })
