@@ -3,6 +3,45 @@ const mongoose = require('mongoose')
 const User = require('../models/User')
 
 /* CREATE API */
+// Save Article/Project/Archive/Query
+exports.savePost = async(req, res) => {
+    try {
+        // parse postId as id from url
+        const { id } = req.params
+        
+        // parse userId from body
+        const { userId } = req.body
+        
+        // find user of specfic userId
+        const user = await User.findById(userId)
+
+        // check post is already present in collection
+        const alreadySaved = user.savedPost.find((post) => post.postId.toString() === id.toString())
+        console.log(alreadySaved)
+        
+       // if alreadySaved then unsave the post
+       if (alreadySaved) {
+        // Remove the post from savedPost array using `pull` method
+        user.savedPost.pull(alreadySaved._id)
+        await user.save()
+        return res.status(200).json({ message: 'Post Unsaved successfully' })
+    }
+
+        // if !alreadySaved then save the post, create a new savedPost object
+        const savedPostObject = {
+            postId: id,
+        }
+
+        // push the savePostObject to user's savePost array
+        user.savedPost.push(savedPostObject)
+        await user.save()
+        return res.status(201).json({ message: "Post Saved Successfully" })
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 // Follow / Unfollw Feature
 exports.followUser = async(req, res) => {
     try {

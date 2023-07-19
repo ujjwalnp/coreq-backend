@@ -1,18 +1,28 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const mongoose = require("mongoose")
+const { Schema } = mongoose
 
 const userFollowingSchema = new Schema({
   followingId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-
   },
   isFollowing: {
     type: Boolean,
   },
 },
-{timestamps: true},
+  {timestamps: true},
 )
+
+const savedPostSchema = new Schema({
+  postId: {
+    type: mongoose.Schema.Types.ObjectId,
+    refPath: 'postType'
+  },
+  postType: {
+    type: String,
+    enum: ['Article', 'Archive', 'Project', 'Query']
+  }
+})
 
 const userSchema = new Schema({
   username: {
@@ -97,20 +107,11 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
+  savedPost: [savedPostSchema],
 },
   { timestamps: true }
-);
+)
 
-// const virtual = userSchema.virtual('userId')
-// virtual.get(function(){
-//   return this._id
-// })
-// userSchema.set('toJSON', {
-//   virtuals: true,
-//   versionKey: false,
-//   transform: function (doc, ret) { delete ret._id}
-// })
+const User = mongoose.model("User", userSchema)
 
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+module.exports = User

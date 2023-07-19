@@ -12,6 +12,7 @@ router
 
 /* FOLLOW USER */
     .post('/follow/:userId', verifyToken, userController.followUser)
+    .post('/savePost/:id', verifyToken, userController.savePost) 
     /* UNFOLLOW USER */
 
 /* UPDATE USERDETAILS */
