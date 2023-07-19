@@ -2,20 +2,15 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const commentSchema = new Schema({
-    text: {
-        type: String,
-        required: true,
-    },
-    author: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
+    comment: {
+        type: String,
     },
 },
-    { timestamps: true },
+{ timestamps: true },
 )
 
 const voteSchema = new Schema({

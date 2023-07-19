@@ -38,7 +38,7 @@ exports.createProject = async(req, res)=>{
     }
 }
 
-/* READ ARTICLES */
+/* READ PROJECTS */
 exports.getAllProjects = async(req, res)=>{
     try {
         // get all the projects from database
@@ -66,11 +66,11 @@ exports.getUserProjects = async(req, res)=>{
 }
 
 exports.getSpecificProject = async(req, res)=>{
-    // parse projectId  from request body or query params
-    const projectId = req.params.projectId
+    // parse projectId as id from request body or query params
+    const { id } = req.params
 
     try {
-        const project = await Project.findById(projectId)
+        const project = await Project.findById(id)
         res.status(200).json(project)
     }
     catch (error) {
@@ -99,14 +99,14 @@ exports.countUserProjects = async(req, res)=>{
         // count the number of projects of specific userId
         const count = await Project.countDocuments({ userId }).exec()
 
-        res.status(200).json(count)
+        res.status(200).json({ count })
     }
     catch(error) {
         res.status(404).json({ message: error.message })
     }
 }
 
-exports.getUpVoteCount = async(req, res)=>{
+exports.countUpVotes = async(req, res)=>{
     try {
         // parse projectId as id from url
         const { id } = req.params
@@ -117,14 +117,14 @@ exports.getUpVoteCount = async(req, res)=>{
         // count the number of upvotes
         const upVoteCount = project.votes.filter((vote) => vote.hasVoted == true).length
 
-        res.status(200).json(upVoteCount)
+        res.status(200).json({ upVoteCount })
     }
     catch (error) {
         res.status(404).json({ message: error.message })
     }
 }
 
-exports.getDownVoteCount = async(req, res)=>{
+exports.countDownVotes = async(req, res)=>{
     try {
         // parse projectId as id from url
         const { id } = req.params
@@ -135,7 +135,25 @@ exports.getDownVoteCount = async(req, res)=>{
         // count the number of downvotes
         const downVoteCount = project.votes.filter((vote) => vote.hasVoted == false).length
 
-        res.status(200).json(downVoteCount)
+        res.status(200).json({ downVoteCount })
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
+exports.countComments = async(req, res)=>{
+    try {
+        // parse projectId as id from url
+        const { id } = req.params
+
+        // find project of specific id
+        const project = await Project.findById(id)
+
+        // count comments
+        const commentCount = project.comments.length
+
+        res.status(200).json({ commentCount })
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -203,22 +221,51 @@ exports.downVoteProject = async(req, res)=>{
     }
 }
 
+exports.commentProject = async(req, res)=>{
+    try{
+        // parse projectId as id from url
+        const { id } = req.params
+
+        // parse userId & comment from body
+        const { userId, comment } = req.body
+
+        // find project of specfic id
+        const project = await Project.findById(id)
+
+        // create a new comment object
+        const commentObject = {
+            userId: userId,
+            comment: comment,
+        }
+
+        // push the commentObject to project's comments array
+        project.comments.push(commentObject)
+
+        // save the project
+        await project.save()
+        res.status(201).json({ message: 'comment added' })
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 /* DELETE PROJECT */
 exports.deleteProject = async(req, res)=>{
     try {
-        // parse archive's id from url
+        // parse project's id from url
         const userId = req.params.userId
         const { id } = req.body
         
         try {
-            // delete the archive of specific id
-            const deletedProject = await Archive.findOneAndDelete({ 
+            // delete the project of specific id
+            const deletedProject = await Project.findOneAndDelete({ 
                 _id: id,
                 userId: userId
             }).exec()
 
             if (!deletedProject) {
-                return res.status(404).json({ message: "Article not found." });
+                return res.status(404).json({ message: "Project not found." });
             }
 
             res.status(200).json(deletedProject)
@@ -229,5 +276,34 @@ exports.deleteProject = async(req, res)=>{
     }   
     catch(error) {
         res.status(400).json({ message: error.message })
+    }
+}
+
+exports.deleteComment = async(req, res)=>{
+    try {
+        // parse projectId as id from url
+        const { id } = req.params
+
+        // parse commentId & userId from body
+        const { commentId, userId } = req.body
+
+        // find project of specfic id
+        const project = await Project.findById(id)
+
+        // find the comment of specific commentId
+        const comment = project.comments.find((comment) => comment._id.toString() === commentId.toString())
+
+        // check if the comment's userId == userId
+        if (!comment || comment.userId.toString() !== userId.toString()) {
+            return res.status(400).json({ message: 'Comment not found or You are not authorized to delete this comment.' })
+        }
+        
+        // remove the comment from comments array using 'pull' method
+        project.comments.pull({ _id: comment._id })
+        await project.save()
+        res.status(200).json('Comment deleted successfully.')
+    }
+    catch(error) {
+        res.status(404).json({ message: error.message })
     }
 }

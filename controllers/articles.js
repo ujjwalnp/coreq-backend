@@ -66,11 +66,11 @@ exports.getUserArticles = async(req, res)=>{
 }
 
 exports.getSpecificArticle = async(req, res)=>{
-    // parse articleId  from request body or query params
-    const articleId = req.params.articleId
+    // parse articleId as id from request body or query params
+    const { id } = req.params
 
     try {
-        const article = await Article.findById(articleId)
+        const article = await Article.findById(id)
         res.status(200).json(article)
     }
     catch (error) {
@@ -91,7 +91,7 @@ exports.getRecommendArticles = async(req, res)=>{
     }
 }
 
-exports.getUpVoteCount = async(req, res)=>{
+exports.countUpVotes = async(req, res)=>{
     try {
         // parse articleId as id from url
         const { id } = req.params
@@ -102,14 +102,14 @@ exports.getUpVoteCount = async(req, res)=>{
         // count the number of upvotes
         const upVoteCount = article.votes.filter((vote) => vote.hasVoted == true).length
 
-        res.status(200).json(upVoteCount)
+        res.status(200).json({ upVoteCount })
     }
     catch (error) {
         res.status(404).json({ message: error.message })
     }
 }
 
-exports.getDownVoteCount = async(req, res)=>{
+exports.countDownVotes = async(req, res)=>{
     try {
         // parse articleId as id from url
         const { id } = req.params
@@ -120,12 +120,31 @@ exports.getDownVoteCount = async(req, res)=>{
         // count the number of downvotes
         const downVoteCount = article.votes.filter((vote) => vote.hasVoted == false).length
 
-        res.status(200).json(downVoteCount)
+        res.status(200).json({ downVoteCount })
     }
     catch (error) {
         res.status(404).json({ message: error.message })
     }
 }
+
+exports.countComments = async(req, res)=>{
+    try {
+        // parse articleId as id from url
+        const { id } = req.params
+
+        // find article of specific id
+        const article = await Article.findById(id)
+
+        // count comments
+        const commentCount = article.comments.length
+
+        res.status(200).json({ commentCount })
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 exports.countUserArticles = async(req, res)=>{
     try {
         // parse userId from url
@@ -134,7 +153,7 @@ exports.countUserArticles = async(req, res)=>{
         // count the number of articles of specific userId
         const count = await Article.countDocuments({ userId }).exec()
 
-        res.status(200).json(count)
+        res.status(200).json({ count })
     }
     catch(error) {
         res.status(404).json({ message: error.message })
@@ -202,16 +221,45 @@ exports.downVoteArticle = async(req, res)=>{
     }
 }
 
+exports.commentArticle = async(req, res)=>{
+    try{
+        // parse articleId as id from url
+        const { id } = req.params
+
+        // parse userId & comment from body
+        const { userId, comment } = req.body
+
+        // find article of specfic id
+        const article = await Article.findById(id)
+
+        // create a new comment object
+        const commentObject = {
+            userId: userId,
+            comment: comment,
+        }
+
+        // push the commentObject to article's comments array
+        article.comments.push(commentObject)
+
+        // save the article
+        await article.save()
+        res.status(201).json({ message: 'comment added' })
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 /* DELETE ARTICLE */
 exports.deleteArticle = async(req, res)=>{
     try {
-        // parse archive's id from url
+        // parse article's id from url
         const userId = req.params.userId
         const { id } = req.body
         
         try {
-            // delete the archive of specific id
-            const deletedArticle = await Archive.findOneAndDelete({ 
+            // delete the article of specific id
+            const deletedArticle = await Article.findOneAndDelete({ 
                 _id: id,
                 userId: userId
             }).exec()
@@ -228,5 +276,34 @@ exports.deleteArticle = async(req, res)=>{
     }   
     catch(error) {
         res.status(400).json({ message: error.message })
+    }
+}
+
+exports.deleteComment = async(req, res)=>{
+    try {
+        // parse articleId as id from url
+        const { id } = req.params
+
+        // parse commentId & userId from body
+        const { commentId, userId } = req.body
+
+        // find article of specfic id
+        const article = await Article.findById(id)
+
+        // find the comment of specific commentId
+        const comment = article.comments.find((comment) => comment._id.toString() === commentId.toString())
+
+        // check if the comment's userId == userId
+        if (!comment || comment.userId.toString() !== userId.toString()) {
+            return res.status(400).json({ message: 'Comment not found or You are not authorized to delete this comment.' })
+        }
+        
+        // remove the comment from comments array using 'pull' method
+        article.comments.pull({ _id: comment._id })
+        await article.save()
+        res.status(200).json('Comment deleted successfully.')
+    }
+    catch(error) {
+        res.status(404).json({ message: error.message })
     }
 }

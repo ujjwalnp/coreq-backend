@@ -106,6 +106,21 @@ exports.getAllUsers = async(req, res) => {
     }
 }
 
+exports.countSavedPosts = async(req, res) => {
+    try {
+        // parse userId from url
+        const userId = req.params.userId
+
+        // count the number of articles of specific userId
+        const count = await Article.countDocuments({ userId }).exec()
+
+        res.status(200).json(count)
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 exports.getUserDetails = async(req, res) => {
     // parse userId from url
     const userId = new mongoose.Types.ObjectId(req.params.userId)

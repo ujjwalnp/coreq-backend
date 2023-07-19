@@ -7,13 +7,10 @@ router
 /* READ ARCHIVES */
     .get('/', verifyToken, archiveController.getAllArchives)
     .get('/user/:userId', verifyToken, archiveController.getUserArchives)
-    // router.get('/:userId/archives')
+    .get('/:id', verifyToken, archiveController.getSpecificArchive)
     .get('/user/:userId/countArchives', verifyToken, archiveController.countUserArchives)
     .get('/:id/countUpVote', verifyToken, archiveController.getUpVoteCount)
     .get('/:id/countDownVote', verifyToken, archiveController.getDownVoteCount)
-
-    // GET specific archive
-    .get('/:archiveId', verifyToken, archiveController.getSpecificArchive)
 
 /* CREATE ARCHIVE */
     .post('/', verifyToken, archiveController.createArchive)
@@ -23,9 +20,11 @@ router
     .post('/:id/upVote', verifyToken, archiveController.upVoteArchive)
     // DownVote
     .post('/:id/downVote', verifyToken, archiveController.downVoteArchive)
+    // Comment
+    .post('/:id/comment', verifyToken, archiveController.commentArchive)
 
-// DELETE ARCHIVE
+/* DELETE ARCHIVE */
     .delete('/user/:userId', verifyToken, archiveController.deleteArchive)
-
+    .delete('/:id/deleteComment', verifyToken, archiveController.deleteComment)
 
 exports.router = router
