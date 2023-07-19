@@ -99,7 +99,7 @@ exports.countUserProjects = async(req, res)=>{
         // count the number of projects of specific userId
         const count = await Project.countDocuments({ userId }).exec()
 
-        res.status(200).json({ count })
+        res.status(200).json(count)
     }
     catch(error) {
         res.status(404).json({ message: error.message })
@@ -117,7 +117,7 @@ exports.countUpVotes = async(req, res)=>{
         // count the number of upvotes
         const upVoteCount = project.votes.filter((vote) => vote.hasVoted == true).length
 
-        res.status(200).json({ upVoteCount })
+        res.status(200).json(upVoteCount)
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -135,7 +135,7 @@ exports.countDownVotes = async(req, res)=>{
         // count the number of downvotes
         const downVoteCount = project.votes.filter((vote) => vote.hasVoted == false).length
 
-        res.status(200).json({ downVoteCount })
+        res.status(200).json(downVoteCount)
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -153,7 +153,7 @@ exports.countComments = async(req, res)=>{
         // count comments
         const commentCount = project.comments.length
 
-        res.status(200).json({ commentCount })
+        res.status(200).json(commentCount)
     }
     catch (error) {
         res.status(404).json({ message: error.message })
