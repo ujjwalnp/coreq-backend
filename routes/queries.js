@@ -9,8 +9,9 @@ router
     .get('/user/:userId', verifyToken, queryController.getUserQueries)
     .get('/:id', verifyToken, queryController.getSpecificQuery)
     .get('/user/:userId/countQueries', verifyToken, queryController.countUserQueries)
-    .get('/:id/countUpVote', verifyToken, queryController.getUpVoteCount)
-    .get('/:id/countDownVote', verifyToken, queryController.getDownVoteCount)
+    .get('/:id/countUpVote', verifyToken, queryController.countUpVotes)
+    .get('/:id/countDownVote', verifyToken, queryController.countDownVotes)
+    .get('/:id/countComment', verifyToken, queryController.countComments)
 
 /* CREATE QUERY */
     .post('/', verifyToken, queryController.createQuery)

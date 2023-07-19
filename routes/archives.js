@@ -9,8 +9,9 @@ router
     .get('/user/:userId', verifyToken, archiveController.getUserArchives)
     .get('/:id', verifyToken, archiveController.getSpecificArchive)
     .get('/user/:userId/countArchives', verifyToken, archiveController.countUserArchives)
-    .get('/:id/countUpVote', verifyToken, archiveController.getUpVoteCount)
-    .get('/:id/countDownVote', verifyToken, archiveController.getDownVoteCount)
+    .get('/:id/countUpVote', verifyToken, archiveController.countUpVotes)
+    .get('/:id/countDownVote', verifyToken, archiveController.countDownVotes)
+    .get('/:id/countComment', verifyToken, archiveController.countComments)
 
 /* CREATE ARCHIVE */
     .post('/', verifyToken, archiveController.createArchive)

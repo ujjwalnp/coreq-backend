@@ -9,8 +9,9 @@ router
     .get('/user/:userId', verifyToken, projectController.getUserProjects)
     .get('/:id', verifyToken, projectController.getSpecificProject)
     .get('/user/:userId/countProjects', verifyToken, projectController.countUserProjects)
-    .get('/:id/countUpVote', verifyToken, projectController.getUpVoteCount)
-    .get('/:id/countDownVote', verifyToken, projectController.getDownVoteCount)
+    .get('/:id/countUpVote', verifyToken, projectController.countUpVotes)
+    .get('/:id/countDownVote', verifyToken, projectController.countDownVotes)
+    .get('/:id/countComment', verifyToken, projectController.countComments)
 
 /* CREATE PROJECT */
     .post('/', verifyToken, projectController.createProject)

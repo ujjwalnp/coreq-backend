@@ -9,8 +9,8 @@ router
     .get('/user/:userId', verifyToken, articleController.getUserArticles)
     .get('/:id', verifyToken, articleController.getSpecificArticle)
     .get('/user/:userId/countArticles', verifyToken, articleController.countUserArticles)
-    .get('/:id/countUpVote', verifyToken, articleController.getUpVoteCount)
-    .get('/:id/countDownVote', verifyToken, articleController.getDownVoteCount)
+    .get('/:id/countUpVote', verifyToken, articleController.countUpVotes)
+    .get('/:id/countDownVote', verifyToken, articleController.countDownVotes)
     .get('/:id/countComments', verifyToken, articleController.countComments)
 
 /* CREATE ARTICLE */
