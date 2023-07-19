@@ -26,7 +26,7 @@ exports.createUser = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ message: "Username or email already exists" })
+        .json({ message: "Signup: Username or email already exists" })
     }
 
     // Hash and salt the password before storing it in the database
@@ -49,14 +49,13 @@ exports.createUser = async (req, res) => {
 
     try {
       await newUser.save()
-      res.status(201).json({ newUser, message: "User registered successfully" })
+      Console.log('Signup: User registered successfully')
+      res.status(201).json({ newUser, message: "Signup: User registered successfully" })
     } catch (error) {
-      console.error(error)
-      res.status(500).json({ message: "Something went wrong" })
+      res.status(500).json({ message: "Signup: Something went wrong" })
     }
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: "Server error" })
+    res.status(500).json({ message: "Signup: Server error" })
   }
 };
 
@@ -68,15 +67,15 @@ exports.loginUser = async (req, res) => {
     // Check if the user exists
     const user = await UserModel.findOne({ $or: [{ username }, { email }] })
     if (!user) {
-        console.log('user not found')
-      return res.status(404).json({ message: "User not found" })
+      console.log('Login: Invalid Username or Email')
+      return res.status(404).json({ message: "Login: Invaild User" })
     }
 
     // Compare the provided password with the stored hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password)
     if (!isPasswordValid) {
-        console.log('invalid password')
-      return res.status(401).json({ message: "Invalid password" })
+      console.log('Login: Invalid Password')
+      return res.status(401).json({ message: "Login: Invalid password" })
     }
 
     // Create a session and store the user ID in the session
@@ -93,11 +92,10 @@ exports.loginUser = async (req, res) => {
       // other cookie option(s)
     });
 
-    console.log('login success')
-    res.status(200).json({ token,userId: user._id, message: "Login successful" })
+    console.log('Login: Login successful')
+    res.status(200).json({ token,userId: user._id, message: "Login: Login successful" })
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: "Server error" })
+    res.status(500).json({ message: "Login: Server error" })
   }
 }
 
