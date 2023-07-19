@@ -109,12 +109,15 @@ exports.getAllUsers = async(req, res) => {
 exports.countSavedPosts = async(req, res) => {
     try {
         // parse userId from url
-        const userId = req.params.userId
+        const { userId } = req.params
 
-        // count the number of articles of specific userId
-        const count = await Article.countDocuments({ userId }).exec()
+        // find the user with the specific userId
+        const user = await User.findById(userId)
 
-        res.status(200).json(count)
+        // count the number of saved posts for the user
+        const count = user.savedPost.length
+
+        res.status(200).json({ count })
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -219,10 +222,8 @@ exports.isFollower = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: error.message })
     }
-  }
+}
   
-
-
 exports.getUserFollowers = async (req, res) => {
     try {
       const userId = new mongoose.Types.ObjectId(req.params.userId)
@@ -248,8 +249,7 @@ exports.getUserFollowers = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: error.message })
     }
-  }
-
+}
 
 /* UPDATE API */
 exports.editProfile = async(req, res) => {
