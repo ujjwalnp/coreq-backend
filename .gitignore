@@ -4,3 +4,4 @@ routes/user1.js
 controllers/user.js
 .vscode
 dummyTestData.json
+uploads

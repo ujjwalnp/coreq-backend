@@ -62,6 +62,9 @@ const articleSchema = new Schema({
     userPicturePath: {
         type: String,
     },
+    articlePDFPath: {
+        type: String,
+    },
     votes: [voteSchema],
     comments: [commentSchema],
     keywords: {
@@ -73,7 +76,7 @@ const articleSchema = new Schema({
         default: 'Article',
     },
 },
-{ timestamps: true }, 
+    { timestamps: true }, 
 )
 
 const Article = mongoose.model('Article', articleSchema)

@@ -6,6 +6,9 @@ exports.createArchive = async(req, res)=>{
     try{
         // parse data from body
         const { userId, title, collabrators, team, description, keywords } = req.body
+
+        // Access the uploaded PDF file from req.file
+        const pdfPath = req.file.path
         
         // finding user's details from 'users' collection
         const user = await User.findById(userId)
@@ -20,6 +23,7 @@ exports.createArchive = async(req, res)=>{
             team,
             description,
             keywords,
+            archivePDFPath: pdfPath,
             votes: [],
             comments: [],
         })

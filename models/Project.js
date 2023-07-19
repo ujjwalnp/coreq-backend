@@ -56,6 +56,9 @@ const projectSchema = new Schema({
     },
     votes: [voteSchema],
     comments: [commentSchema],
+    projectPDFPath: {
+        type: String,
+    },
     keywords: {
         type: String,
         required: true,

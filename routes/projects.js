@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const projectController = require('../controllers/projects')
 const { verifyToken } = require('../middlewares/auth')
+const { projectPDFUpload } = require('../middlewares/fileUpload')
 
 router
 /* READ PROJECTS */
@@ -14,7 +15,7 @@ router
     .get('/:id/countComment', verifyToken, projectController.countComments)
 
 /* CREATE PROJECT */
-    .post('/', verifyToken, projectController.createProject)
+    .post('/', verifyToken, projectPDFUpload.single('projectPdf'), projectController.createProject)
 
 /* UPDATE PROJECT */
     // UpVote

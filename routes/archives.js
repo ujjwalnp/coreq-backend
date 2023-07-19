@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const archiveController = require('../controllers/archives')
 const { verifyToken } = require('../middlewares/auth')
+const { archivePDFUpload } = require('../middlewares/fileUpload')
 
 router
 /* READ ARCHIVES */
@@ -14,7 +15,7 @@ router
     .get('/:id/countComment', verifyToken, archiveController.countComments)
 
 /* CREATE ARCHIVE */
-    .post('/', verifyToken, archiveController.createArchive)
+    .post('/', verifyToken, archivePDFUpload.single('archivePdf'), archiveController.createArchive)
 
 /* UPDATE ARCHIVE */
     // UpVote

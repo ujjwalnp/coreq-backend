@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const articleController = require('../controllers/articles')
 const { verifyToken } = require('../middlewares/auth')
+const { articlePDFUpload } = require('../middlewares/fileUpload')
 
 router
 /* READ ARTICLES */
@@ -14,7 +15,7 @@ router
     .get('/:id/countComments', verifyToken, articleController.countComments)
 
 /* CREATE ARTICLE */
-    .post('/', verifyToken, articleController.createArticle)
+    .post('/', verifyToken, articlePDFUpload.single('articlePdf'), articleController.createArticle)
 
 /* UPDATE ARTICLE */
     // UpVote

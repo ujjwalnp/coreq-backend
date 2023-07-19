@@ -7,9 +7,12 @@ exports.createArticle = async(req, res)=>{
         // parse data from body
         const { userId, title, description, authors, publicationYear, publicationHouse, keywords } = req.body
         
+        // Access the uploaded PDF file from req.file
+        const pdfPath = req.file.path
+
         // finding user's details from 'users' collection
         const user = await User.findById(userId)
-        console.log(user)
+
         // creating new article using 'Article' Model
         const newArticle = new Article({
             userId,
@@ -21,6 +24,7 @@ exports.createArticle = async(req, res)=>{
             publicationYear,
             publicationHouse,
             keywords,
+            articlePDFPath: pdfPath,
             votes: [],
             comments: [],
         })

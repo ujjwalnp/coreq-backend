@@ -54,6 +54,9 @@ const archiveSchema = new Schema({
         type: String,
         required: true,
     },
+    archivePDFPath: {
+        type: String,
+    },
     votes: [voteSchema],
     comments: [commentSchema],  
     keywords: {
