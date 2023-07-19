@@ -3,20 +3,27 @@ const router = express.Router()
 const queryController = require('../controllers/queries')
 const { verifyToken } = require('../middlewares/auth')
 
+router
 // READ QUERIES
-router.get('/', verifyToken, queryController.getAllQueries)
-router.get('/user/:userId', verifyToken, queryController.getUserQueries)
+.get('/', verifyToken, queryController.getAllQueries)
+.get('/user/:userId', verifyToken, queryController.getUserQueries)
 // router.get('/:userId/projects')
 .get('/user/:userId/countQueries', verifyToken, queryController.countUserQueries)
+.get('/:id/countUpVote', verifyToken, queryController.getUpVoteCount)
+.get('/:id/countDownVote', verifyToken, queryController.getDownVoteCount)
 
 // CREATE QUERY
-router.post('/', verifyToken, queryController.createQuery)
+.post('/', verifyToken, queryController.createQuery)
 
-// UPDATE QUERY
-// router.patch('/:id/like', verifyToken, queryController.likeQuery)     // upvote & downvote
+/* UPDATE QUERY */
+// UpVote
+.post('/:id/upVote', verifyToken, queryController.upVoteQuery)
+// DownVote
+.post('/:id/downVote', verifyToken, queryController.downVoteQuery)
+
 
 // DELETE QUERY
-router.delete('/user/:userId', verifyToken, queryController.deleteQuery)
+.delete('/user/:userId', verifyToken, queryController.deleteQuery)
 
 
 exports.router = router

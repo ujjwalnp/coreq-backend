@@ -15,12 +15,24 @@ const commentSchema = new Schema({
         default: Date.now,
     },
 },
-{ timestamps: true },
+    { timestamps: true },
+)
+
+const voteSchema = new Schema({
+    userId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+    },
+    hasVoted: {
+        type: Boolean,
+    },
+},
+    {timestamps: true}
 )
 
 const querySchema = new Schema({
     userId:{
-        type: String, 
+        type: String,
         required: true,
     },
     username: {
@@ -37,15 +49,9 @@ const querySchema = new Schema({
     },
     description: {
         type: String,
+        required: true,
     },
-    upvote: {
-        type: Number,
-        default: 0,
-    },
-    downvote: {
-        type: Number,
-        default: 0,
-    },
+    votes: [voteSchema],
     comments: [commentSchema],
     tag: {
         type: String,

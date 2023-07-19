@@ -14,7 +14,19 @@ const commentSchema = new Schema({
         default: Date.now,
     },
 },
-{ timestamps: true },
+    { timestamps: true },
+)
+
+const voteSchema = new Schema({
+    userId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+    },
+    hasVoted: {
+        type: Boolean,
+    },
+},
+    {timestamps: true}
 )
 
 const archiveSchema = new Schema({
@@ -36,28 +48,21 @@ const archiveSchema = new Schema({
     },
     collabrators: {
         type: String,
+        required: true,
     },
     team: {
         type: String,
+        required: true,
     },
     description: {
         type: String,
+        required: true,
     },
-    upvote: {
-        type: Number,
-        default: 0,
-    },
-    downvote: {
-        type: Number,
-        default: 0,
-    },
-    comments: [commentSchema],
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },  
+    votes: [voteSchema],
+    comments: [commentSchema],  
     keywords: {
         type: String,
+        required: true,
     },
     tag: {
         type: String,

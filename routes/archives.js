@@ -3,23 +3,29 @@ const router = express.Router()
 const archiveController = require('../controllers/archives')
 const { verifyToken } = require('../middlewares/auth')
 
-// READ ARCHIVES
-router.get('/', verifyToken, archiveController.getAllArchives)
-router.get('/user/:userId', verifyToken, archiveController.getUserArchives)
-// router.get('/:userId/archives')
-.get('/user/:userId/countArchives', verifyToken, archiveController.countUserArchives)
+router
+/* READ ARCHIVES */
+    .get('/', verifyToken, archiveController.getAllArchives)
+    .get('/user/:userId', verifyToken, archiveController.getUserArchives)
+    // router.get('/:userId/archives')
+    .get('/user/:userId/countArchives', verifyToken, archiveController.countUserArchives)
+    .get('/:id/countUpVote', verifyToken, archiveController.getUpVoteCount)
+    .get('/:id/countDownVote', verifyToken, archiveController.getDownVoteCount)
 
-// GET specific archive
-.get('/:archiveId', verifyToken, archiveController.getSpecificArchive)
+    // GET specific archive
+    .get('/:archiveId', verifyToken, archiveController.getSpecificArchive)
 
-// CREATE ARCHIVE
-router.post('/', verifyToken, archiveController.createArchive)
+/* CREATE ARCHIVE */
+    .post('/', verifyToken, archiveController.createArchive)
 
-// UPDATE ARCHIVE
-// router.patch('/:id/like', verifyToken, archiveController.likeArchive)     // upvote & downvote
+/* UPDATE ARCHIVE */
+    // UpVote
+    .post('/:id/upVote', verifyToken, archiveController.upVoteArchive)
+    // DownVote
+    .post('/:id/downVote', verifyToken, archiveController.downVoteArchive)
 
 // DELETE ARCHIVE
-router.delete('/user/:userId', verifyToken, archiveController.deleteArchive)
+    .delete('/user/:userId', verifyToken, archiveController.deleteArchive)
 
 
 exports.router = router
