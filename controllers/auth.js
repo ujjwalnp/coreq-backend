@@ -24,9 +24,7 @@ exports.createUser = async (req, res) => {
       $or: [{ username }, { email }],
     })
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "Signup: Username or email already exists" })
+      return res.status(400).json({ message: "Signup: Username or email already exists" })
     }
 
     // Hash and salt the password before storing it in the database
@@ -49,15 +47,15 @@ exports.createUser = async (req, res) => {
 
     try {
       await newUser.save()
-      Console.log('Signup: User registered successfully')
+      console.log('Signup: User registered successfully')
       res.status(201).json({ newUser, message: "Signup: User registered successfully" })
     } catch (error) {
-      res.status(500).json({ message: "Signup: Something went wrong" })
+      res.status(500).json({ message: error.message })
     }
   } catch (error) {
-    res.status(500).json({ message: "Signup: Server error" })
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 /* LOGIN */
 exports.loginUser = async (req, res) => {
