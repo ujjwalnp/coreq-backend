@@ -18,6 +18,18 @@ const commentSchema = new Schema({
 { timestamps: true },
 )
 
+const voteSchema = new Schema({
+    userId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+    },
+    hasVoted: {
+        type: Boolean,
+    },
+},
+    {timestamps: true}
+)
+
 const articleSchema = new Schema({
     userId:{
         type: String,   
@@ -37,31 +49,29 @@ const articleSchema = new Schema({
     },
     authors: {
         type: String,
+        required: true,
     },
     publicationYear: {
         type: Number,
+        required: true,
         defualt: 2023,
     },
     publicationHouse: {
         type: String,
+        required: true,
     },
     description: {
         type: String,
+        required: true,
     },
     userPicturePath: {
         type: String,
     },
-    likes: {
-        type: Map,
-        of: Boolean,
-    },
+    votes: [voteSchema],
     comments: [commentSchema],
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },  
     keywords: {
         type: String,
+        required: true,
     },
     tag: {
         type: String,

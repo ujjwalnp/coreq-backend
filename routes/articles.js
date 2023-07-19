@@ -9,6 +9,8 @@ router
 .get('/user/:userId', verifyToken, articleController.getUserArticles)
 // router.get('/:userId/articles')
 .get('/user/:userId/countArticles', verifyToken, articleController.countUserArticles)
+.get('/:id/countUpVote', verifyToken, articleController.getUpVoteCount)
+.get('/:id/countDownVote', verifyToken, articleController.getDownVoteCount)
 
 // GET specific article
 .get('/:articleId', verifyToken, articleController.getSpecificArticle)
@@ -17,7 +19,10 @@ router
 .post('/', verifyToken, articleController.createArticle)
 
 /* UPDATE ARTICLE */
-.patch('/:id/like', verifyToken, articleController.likeArticle)     // upvote & downvote
+// UpVote
+.post('/:id/upVote', verifyToken, articleController.upVoteArticle)
+// DownVote
+.post('/:id/downVote', verifyToken, articleController.downVoteArticle)
 
 /* DELETE ARTICLE */
 .delete('/user/:userId', verifyToken, articleController.deleteArticle)
