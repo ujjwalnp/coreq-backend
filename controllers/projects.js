@@ -20,7 +20,7 @@ exports.createProject = async(req, res)=>{
             team,
             description,
             keywords,
-            votes: {},
+            votes: [],
             comments: [],
         })
 

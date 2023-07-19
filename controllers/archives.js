@@ -20,7 +20,7 @@ exports.createArchive = async(req, res)=>{
             team,
             description,
             keywords,
-            votes: {},
+            votes: [],
             comments: [],
         })
 

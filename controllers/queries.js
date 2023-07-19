@@ -17,7 +17,7 @@ exports.createQuery = async(req, res)=>{
             username: user.username,
             title,
             description,
-            votes: {},
+            votes: [],
             comments: [],
         })
 
