@@ -169,7 +169,7 @@ exports.upVoteQuery = async(req, res)=>{
         // add new vote to votes array and update it on database
         query.votes.push({ userId, hasVoted: true })
         await query.save()
-        res.status(200).json({ message: 'Query UpVoted' })
+        res.status(201).json({ message: 'Query UpVoted' })
     }
     catch(error) {
         res.status(404).json({ message: error.message })
@@ -199,7 +199,7 @@ exports.downVoteQuery = async(req, res)=>{
         // add new vote to votes array and update it on database
         query.votes.push({ userId, hasVoted: false })
         await query.save()
-        res.status(200).json({ message: 'Query DownVoted' })
+        res.status(201).json({ message: 'Query DownVoted' })
     }
     catch(error) {
         res.status(404).json({ message: error.message })

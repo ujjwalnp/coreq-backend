@@ -177,7 +177,7 @@ exports.upVoteArchive = async(req, res)=>{
         // add new vote to votes array and update it on database
         archive.votes.push({ userId, hasVoted: true })
         await archive.save()
-        res.status(200).json({ message: 'Archive UpVoted' })
+        res.status(201).json({ message: 'Archive UpVoted' })
     }
     catch(error) {
         res.status(404).json({ message: error.message })
@@ -207,7 +207,7 @@ exports.downVoteArchive = async(req, res)=>{
         // add new vote to votes array and update it on database
         archive.votes.push({ userId, hasVoted: false })
         await archive.save()
-        res.status(200).json({ message: 'Archive DownVoted' })
+        res.status(201).json({ message: 'Archive DownVoted' })
     }
     catch(error) {
         res.status(404).json({ message: error.message })

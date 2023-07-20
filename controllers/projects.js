@@ -188,7 +188,7 @@ exports.upVoteProject = async(req, res)=>{
         // add new vote to votes array and update it on database
         project.votes.push({ userId, hasVoted: true })
         await project.save()
-        res.status(200).json({ message: 'Project UpVoted' })
+        res.status(201).json({ message: 'Project UpVoted' })
     }
     catch(error) {
         res.status(404).json({ message: error.message })
@@ -218,7 +218,7 @@ exports.downVoteProject = async(req, res)=>{
         // add new vote to votes array and update it on database
         project.votes.push({ userId, hasVoted: false })
         await project.save()
-        res.status(200).json({ message: 'Project DownVoted' })
+        res.status(201).json({ message: 'Project DownVoted' })
     }
     catch(error) {
         res.status(404).json({ message: error.message })
