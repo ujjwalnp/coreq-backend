@@ -15,7 +15,7 @@ exports.createArticle = async(req, res)=>{
 
         // creating new article using 'Article' Model
         const newArticle = new Article({
-            userId,
+            userId: userId,
             userFullName: user.fullName,
             username: user.username,
             title,

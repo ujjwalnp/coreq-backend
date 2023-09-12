@@ -2,7 +2,7 @@ const Archive = require('../models/Archive')
 const User = require('../models/User')
 
 /* CREATE ARCHIVE */
-exports.createArchive = async(req, res)=>{
+exports.createArchive = async(req, res)=>{ 
     try{
         // parse data from body
         const { userId, title, collabrators, team, description, keywords } = req.body
@@ -15,7 +15,7 @@ exports.createArchive = async(req, res)=>{
 
         // creating new archive using 'Archive' Model
         const newArchive = new Archive({
-            userId,
+            userId: userId,
             userFullName: user.fullName,
             username: user.username,
             title,

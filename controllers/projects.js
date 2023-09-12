@@ -15,7 +15,7 @@ exports.createProject = async(req, res)=>{
 
         // creating new project using 'Project' Model
         const newProject = new Project({
-            userId,
+            userId: userId,
             userFullName: user.fullName,
             username: user.username,
             title,

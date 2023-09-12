@@ -12,7 +12,7 @@ exports.createQuery = async(req, res)=>{
 
         // creating new queries using 'Query' Model
         const newQuery = new Query({
-            userId,
+            userId: userId,
             userFullName: user.fullName,
             username: user.username,
             title,
