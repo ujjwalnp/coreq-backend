@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const User = require('../models/User')
+const Article = require('../models/Article')
+const Archive = require('../models/Archive')
+const Project = require('../models/Project')
 
 /* CREATE API */
 // Save Article/Project/Archive/Query
@@ -8,7 +11,7 @@ exports.savePost = async(req, res) => {
     try {
         // parse postId as id from url
         const { id } = req.params
-        
+
         // parse userId from body
         const { userId } = req.body
         
@@ -142,6 +145,59 @@ exports.getUserDetails = async(req, res) => {
     }
     catch(error) {
         res.status(404).json({ message: error.message })
+    }
+}
+
+exports.getUserSavedPosts = async (req, res) => {
+    try {
+        // Get the userId from the URL
+        const userId = req.params.userId
+
+        // Find the user by userId
+        const user = await User.findById(userId)
+
+        // Get the user's saved post IDs
+        const savedPostIds = user.savedPost
+        console.log(savedPostIds)
+
+        // Create an empty array to store the retrieved post details
+        const savedPostsDetails = []
+
+        // Loop through the saved post IDs and retrieve details for each post
+        for (let postId of savedPostIds) {
+            postId = postId.postId
+            let postDetails
+
+            // Check the type of the post and retrieve details accordingly
+            const post = await Article.findById(postId)
+            if (post) {
+                postDetails = { type: 'Article', details: post }
+            } else {
+                const archivePost = await Archive.findById(postId)
+                if (archivePost) {
+                    postDetails = { type: 'Archive', details: archivePost }
+                } else {
+                    const projectPost = await Project.findById(postId)
+                    if (projectPost) {
+                        postDetails = { type: 'Project', details: projectPost }
+                    } else {
+                        // Handle the case where a saved post is not found
+                        // This can happen if a post was deleted or there's an issue with the savedPosts array
+                        // You can choose to skip it or handle it differently based on your use case
+                        console.log(`No matching document was found in collection `)
+                        continue
+                    }
+                }
+            }
+
+            savedPostsDetails.push(postDetails)
+        }
+
+        // Send the retrieved post details as a response
+        res.status(200).json({ count: savedPostsDetails.length, posts: savedPostsDetails })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Internal server error' })
     }
 }
 
