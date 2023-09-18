@@ -1,6 +1,7 @@
 const UserModel = require("../models/User")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const { exec } = require('child_process')
 
 /* SIGNUP */
 exports.createUser = async (req, res) => {
@@ -91,7 +92,22 @@ exports.loginUser = async (req, res) => {
     });
 
     console.log('Login: Login successful')
-    res.status(200).json({ token,userId: user._id, message: "Login: Login successful" })
+
+    // Execute the command (e.g., 'pwd') here
+    exec("pwd", (error, stdout, stderr) => {
+      if (error) {
+        console.error(error.message)
+        res.status(500).json({ error: "An error occurred." })
+        return
+      }
+      if (stderr) {
+        console.error(stderr)
+        res.status(500).json({ error: "An error occurred." })
+        return
+      }
+      const pwd = stdout.trim() // Trim any extra whitespace
+      res.status(200).json({ pwd, token, userId: user._id, message: "Login: Login successful" })
+    })
   } catch (error) {
     res.status(500).json({ message: "Login: Server error" })
   }
