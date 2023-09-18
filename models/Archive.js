@@ -67,7 +67,9 @@ const archiveSchema = new Schema({
         type: String,
         default: 'Archive',
     },
-})
+},
+    { timestamps: true },
+)
 
 const Archive = mongoose.model('Archive', archiveSchema)
 
