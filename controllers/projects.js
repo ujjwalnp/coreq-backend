@@ -195,34 +195,6 @@ exports.commentProject = async(req, res)=>{
 }
 
 /* DELETE PROJECT */
-exports.deleteProject = async(req, res)=>{
-    try {
-        // parse project's id from url
-        const userId = req.params.userId
-        const { id } = req.body
-        
-        try {
-            // delete the project of specific id
-            const deletedProject = await Project.findOneAndDelete({ 
-                _id: id,
-                userId: userId
-            }).exec()
-
-            if (!deletedProject) {
-                return res.status(404).json({ message: "Project not found." });
-            }
-
-            res.status(200).json(deletedProject)
-        }
-        catch(error) {
-            res.status(500).json({ message: error.message })
-        }
-    }   
-    catch(error) {
-        res.status(400).json({ message: error.message })
-    }
-}
-
 exports.deleteComment = async(req, res)=>{
     try {
         // parse projectId as id from url

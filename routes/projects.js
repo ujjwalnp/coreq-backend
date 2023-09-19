@@ -22,7 +22,6 @@ router
     .post('/:id/comment', verifyToken, projectController.commentProject)
 
 /* DELETE PROJECT */
-    .delete('/user/:userId', verifyToken, projectController.deleteProject)
     .delete('/:id/deleteComment', verifyToken, projectController.deleteComment)
 
 

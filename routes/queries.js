@@ -21,7 +21,6 @@ router
     .post('/:id/comment', verifyToken, queryController.commentQuery)
 
 /* DELETE QUERY */
-    .delete('/user/:userId', verifyToken, queryController.deleteQuery)
     .delete('/:id/deleteComment', verifyToken, queryController.deleteComment)
 
 exports.router = router

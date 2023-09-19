@@ -22,7 +22,6 @@ router
     .post('/:id/comment', verifyToken, archiveController.commentArchive)
 
 /* DELETE ARCHIVE */
-    .delete('/user/:userId', verifyToken, archiveController.deleteArchive)
     .delete('/:id/deleteComment', verifyToken, archiveController.deleteComment)
 
 exports.router = router

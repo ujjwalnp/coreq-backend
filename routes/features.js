@@ -4,11 +4,10 @@ const featureController = require('../controllers/features')
 const { verifyToken } = require('../middlewares/auth')
 
 router
-/* READ ARCHIVES */
+/* CREATE */
+/* READ */
 
-/* CREATE ARCHIVE */
-
-/* UPDATE ARCHIVE */
+/* UPDATE */
     // UpVote
     .patch('/:id/upVote', verifyToken, featureController.upVotePost)
     // DownVote
@@ -16,7 +15,7 @@ router
     // Comment
     // .post('/:id/comment', verifyToken, featureController.commentArchive)
 
-/* DELETE ARCHIVE */
-
+/* DELETE */
+    .delete('/:id/deletePost', verifyToken, featureController.deletePost)
 
 exports.router = router

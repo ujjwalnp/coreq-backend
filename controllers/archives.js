@@ -185,34 +185,6 @@ exports.commentArchive = async(req, res)=>{
 
 
 /* DELETE ARCHIVE */
-exports.deleteArchive = async(req, res)=>{
-    try {
-        // parse archive's id from url
-        const userId = req.params.userId
-        const { id } = req.body
-        
-        try {
-            // delete the archive of specific id
-            const deletedArchive = await Archive.findOneAndDelete({ 
-                _id: id,
-                userId: userId
-            }).exec()
-
-            if (!deletedArchive) {
-                return res.status(404).json({ message: "Archive not found." });
-            }
-
-            res.status(200).json(deletedArchive)
-        }
-        catch(error) {
-            res.status(500).json({ message: error.message })
-        }
-    }   
-    catch(error) {
-        res.status(400).json({ message: error.message })
-    }
-}
-
 exports.deleteComment = async(req, res)=>{
     try {
         // parse archiveId as id from url

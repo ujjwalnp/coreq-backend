@@ -176,34 +176,6 @@ exports.commentQuery = async(req, res)=>{
 }
 
 /* DELETE QUERY */
-exports.deleteQuery = async(req, res)=>{
-    try {
-        // parse query's id from url
-        const userId = req.params.userId
-        const { id } = req.body
-        
-        try {
-            // delete the query of specific id
-            const deletedQuery = await Query.findOneAndDelete({ 
-                _id: id,
-                userId: userId
-            }).exec()
-
-            if (!deletedQuery) {
-                return res.status(404).json({ message: "Query not found." });
-            }
-
-            res.status(200).json(deletedQuery)
-        }
-        catch(error) {
-            res.status(500).json({ message: error.message })
-        }
-    }   
-    catch(error) {
-        res.status(400).json({ message: error.message })
-    }
-}
-
 exports.deleteComment = async(req, res)=>{
     try {
         // parse queryId as id from url

@@ -195,34 +195,6 @@ exports.commentArticle = async(req, res)=>{
 }
 
 /* DELETE ARTICLE */
-exports.deleteArticle = async(req, res)=>{
-    try {
-        // parse article's id from url
-        const userId = req.params.userId
-        const { id } = req.body
-        
-        try {
-            // delete the article of specific id
-            const deletedArticle = await Article.findOneAndDelete({ 
-                _id: id,
-                userId: userId
-            }).exec()
-
-            if (!deletedArticle) {
-                return res.status(404).json({ message: "Article not found." });
-            }
-
-            res.status(200).json(deletedArticle)
-        }
-        catch(error) {
-            res.status(500).json({ message: error.message })
-        }
-    }   
-    catch(error) {
-        res.status(400).json({ message: error.message })
-    }
-}
-
 exports.deleteComment = async(req, res)=>{
     try {
         // parse articleId as id from url
