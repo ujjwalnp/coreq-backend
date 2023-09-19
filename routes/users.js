@@ -14,11 +14,12 @@ router
 
 /* FOLLOW USER */
     .post('/follow/:userId', verifyToken, userController.followUser)
-    .post('/savePost/:id', verifyToken, userController.savePost) 
     /* UNFOLLOW USER */
-
-/* UPDATE USERDETAILS */
+    
+    /* UPDATE USERDETAILS */
+    // Save Posts
+    .patch('/savePost/:id', verifyToken, userController.savePost) 
     // editProfile
     .patch('/editProfile/:userId', verifyToken, userController.editProfile)
 
-exports.router = router
+exports.router = router 

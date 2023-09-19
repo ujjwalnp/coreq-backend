@@ -18,10 +18,6 @@ router
     .post('/', verifyToken, articlePDFUpload.single('articlePdf'), articleController.createArticle)
 
 /* UPDATE ARTICLE */
-    // UpVote
-    .post('/:id/upVote', verifyToken, articleController.upVoteArticle)
-    // DownVote
-    .post('/:id/downVote', verifyToken, articleController.downVoteArticle)
     // Comment
     .post('/:id/comment', verifyToken, articleController.commentArticle)
 

@@ -17,10 +17,6 @@ router
     .post('/', verifyToken, queryController.createQuery)
 
 /* UPDATE QUERY */
-    // UpVote
-    .post('/:id/upVote', verifyToken, queryController.upVoteQuery)
-    // DownVote
-    .post('/:id/downVote', verifyToken, queryController.downVoteQuery)
     // Comment
     .post('/:id/comment', verifyToken, queryController.commentQuery)
 

@@ -154,66 +154,6 @@ exports.countComments = async(req, res)=>{
 
 
 /* UPDATE ARCHIVE */
-exports.upVoteArchive = async(req, res)=>{
-    try {
-        const { id } = req.params 
-        const { userId } = req.body
-        
-        // find archive of specfic id
-        const archive = await Archive.findById(id)
-
-        // check if userId of voted user is already present in the collection 
-        const alreadyUpVoted = archive.votes.find((voted) => voted.userId.toString() === userId.toString())
-        if (alreadyUpVoted) {
-            if (alreadyUpVoted.hasVoted == true) {
-                return res.status(400).json({ message: 'You have already upVoted this archive.' })
-            }
-            else {
-                alreadyUpVoted.hasVoted = true
-                await archive.save()
-                return res.status(201).json({ message: 'Archive UpVoted' })
-            }
-        }
-        // add new vote to votes array and update it on database
-        archive.votes.push({ userId, hasVoted: true })
-        await archive.save()
-        res.status(201).json({ message: 'Archive UpVoted' })
-    }
-    catch(error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
-exports.downVoteArchive = async(req, res)=>{
-    try {
-        const { id } = req.params 
-        const { userId } = req.body
-        
-        // find archive of specfic id
-        const archive = await Archive.findById(id)
-
-        // check if userId of voted user is already present in the collection 
-        const alreadyDownVoted = archive.votes.find((voted) => voted.userId.toString() === userId.toString())
-        if (alreadyDownVoted) {
-            if (alreadyDownVoted.hasVoted == true) {
-                alreadyDownVoted.hasVoted = false
-                await archive.save()
-                return res.status(201).json({ message: 'Archive DownVoted' })
-            }
-            else {
-                return res.status(400).json({ message: 'You have already downVoted this archive.' })
-            }
-        }
-        // add new vote to votes array and update it on database
-        archive.votes.push({ userId, hasVoted: false })
-        await archive.save()
-        res.status(201).json({ message: 'Archive DownVoted' })
-    }
-    catch(error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
 exports.commentArchive = async(req, res)=>{
     try{
         // parse archiveId as id from url

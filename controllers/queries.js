@@ -146,66 +146,6 @@ exports.countComments = async(req, res)=>{
 }
 
 /* UPDATE QUERY */
-exports.upVoteQuery = async(req, res)=>{
-    try {
-        const { id } = req.params 
-        const { userId } = req.body
-        
-        // find query of specfic id
-        const query = await Query.findById(id)
-
-        // check if userId of voted user is already present in the collection 
-        const alreadyUpVoted = query.votes.find((voted) => voted.userId.toString() === userId.toString())
-        if (alreadyUpVoted) {
-            if (alreadyUpVoted.hasVoted == true) {
-                return res.status(400).json({ message: 'You have already upVoted this query.' })
-            }
-            else {
-                alreadyUpVoted.hasVoted = true
-                await query.save()
-                return res.status(201).json({ message: 'Query UpVoted' })
-            }
-        }
-        // add new vote to votes array and update it on database
-        query.votes.push({ userId, hasVoted: true })
-        await query.save()
-        res.status(201).json({ message: 'Query UpVoted' })
-    }
-    catch(error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
-exports.downVoteQuery = async(req, res)=>{
-    try {
-        const { id } = req.params 
-        const { userId } = req.body
-        
-        // find query of specfic id
-        const query = await Query.findById(id)
-
-        // check if userId of voted user is already present in the collection 
-        const alreadyDownVoted = query.votes.find((voted) => voted.userId.toString() === userId.toString())
-        if (alreadyDownVoted) {
-            if (alreadyDownVoted.hasVoted == true) {
-                alreadyDownVoted.hasVoted = false
-                await query.save()
-                return res.status(201).json({ message: 'Query DownVoted' })
-            }
-            else {
-                return res.status(400).json({ message: 'You have already downVoted this query.' })
-            }
-        }
-        // add new vote to votes array and update it on database
-        query.votes.push({ userId, hasVoted: false })
-        await query.save()
-        res.status(201).json({ message: 'Query DownVoted' })
-    }
-    catch(error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
 exports.commentQuery = async(req, res)=>{
     try{
         // parse queryId as id from url

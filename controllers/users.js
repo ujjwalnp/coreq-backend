@@ -169,9 +169,9 @@ exports.getUserSavedPosts = async (req, res) => {
             let postDetails
 
             // Check the type of the post and retrieve details accordingly
-            const post = await Article.findById(postId)
-            if (post) {
-                postDetails = { type: 'Article', details: post }
+            const articlePost = await Article.findById(postId)
+            if (articlePost) {
+                postDetails = { type: 'Article', details: articlePost }
             } else {
                 const archivePost = await Archive.findById(postId)
                 if (archivePost) {
@@ -184,7 +184,7 @@ exports.getUserSavedPosts = async (req, res) => {
                         // Handle the case where a saved post is not found
                         // This can happen if a post was deleted or there's an issue with the savedPosts array
                         // You can choose to skip it or handle it differently based on your use case
-                        console.log(`No matching document was found in collection `)
+                        console.log('No matching document was found in collection')
                         continue
                     }
                 }

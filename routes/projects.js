@@ -18,10 +18,6 @@ router
     .post('/', verifyToken, projectPDFUpload.single('projectPdf'), projectController.createProject)
 
 /* UPDATE PROJECT */
-    // UpVote
-    .post('/:id/upVote', verifyToken, projectController.upVoteProject)
-    // DownVote
-    .post('/:id/downVote', verifyToken, projectController.downVoteProject)
     // Comment
     .post('/:id/comment', verifyToken, projectController.commentProject)
 

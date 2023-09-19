@@ -18,10 +18,6 @@ router
     .post('/', verifyToken, archivePDFUpload.single('archivePdf'), archiveController.createArchive)
 
 /* UPDATE ARCHIVE */
-    // UpVote
-    .post('/:id/upVote', verifyToken, archiveController.upVoteArchive)
-    // DownVote
-    .post('/:id/downVote', verifyToken, archiveController.downVoteArchive)
     // Comment
     .post('/:id/comment', verifyToken, archiveController.commentArchive)
 

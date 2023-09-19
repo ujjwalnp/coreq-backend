@@ -165,66 +165,6 @@ exports.countUserArticles = async(req, res)=>{
 }
 
 /* UPDATE ARTICLE */
-exports.upVoteArticle = async(req, res)=>{
-    try {
-        const { id } = req.params 
-        const { userId } = req.body
-        
-        // find article of specfic id
-        const article = await Article.findById(id)
-
-        // check if userId of voted user is already present in the collection 
-        const alreadyUpVoted = article.votes.find((voted) => voted.userId.toString() === userId.toString())
-        if (alreadyUpVoted) {
-            if (alreadyUpVoted.hasVoted == true) {
-                return res.status(400).json({ message: 'You have already upVoted this article.' })
-            }
-            else {
-                alreadyUpVoted.hasVoted = true
-                await article.save()
-                return res.status(201).json({ message: 'Article UpVoted' })
-            }
-        }
-        // add new vote to votes array and update it on database
-        article.votes.push({ userId, hasVoted: true })
-        await article.save()
-        res.status(201).json({ message: 'Article UpVoted' })
-    }
-    catch(error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
-exports.downVoteArticle = async(req, res)=>{
-    try {
-        const { id } = req.params 
-        const { userId } = req.body
-        
-        // find article of specfic id
-        const article = await Article.findById(id)
-
-        // check if userId of voted user is already present in the collection 
-        const alreadyDownVoted = article.votes.find((voted) => voted.userId.toString() === userId.toString())
-        if (alreadyDownVoted) {
-            if (alreadyDownVoted.hasVoted == true) {
-                alreadyDownVoted.hasVoted = false
-                await article.save()
-                return res.status(201).json({ message: 'Article DownVoted' })
-            }
-            else {
-                return res.status(400).json({ message: 'You have already downVoted this article.' })
-            }
-        }
-        // add new vote to votes array and update it on database
-        article.votes.push({ userId, hasVoted: false })
-        await article.save()
-        res.status(201).json({ message: 'Article DownVoted' })
-    }
-    catch(error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
 exports.commentArticle = async(req, res)=>{
     try{
         // parse articleId as id from url

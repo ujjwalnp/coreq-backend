@@ -165,66 +165,6 @@ exports.countComments = async(req, res)=>{
 }
 
 /* UPDATE PROJECT */
-exports.upVoteProject = async(req, res)=>{
-    try {
-        const { id } = req.params 
-        const { userId } = req.body
-        
-        // find project of specfic id
-        const project = await Project.findById(id)
-
-        // check if userId of voted user is already present in the collection 
-        const alreadyUpVoted = project.votes.find((voted) => voted.userId.toString() === userId.toString())
-        if (alreadyUpVoted) {
-            if (alreadyUpVoted.hasVoted == true) {
-                return res.status(400).json({ message: 'You have already upVoted this project.' })
-            }
-            else {
-                alreadyUpVoted.hasVoted = true
-                await project.save()
-                return res.status(201).json({ message: 'Project UpVoted' })
-            }
-        }
-        // add new vote to votes array and update it on database
-        project.votes.push({ userId, hasVoted: true })
-        await project.save()
-        res.status(201).json({ message: 'Project UpVoted' })
-    }
-    catch(error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
-exports.downVoteProject = async(req, res)=>{
-    try {
-        const { id } = req.params 
-        const { userId } = req.body
-        
-        // find project of specfic id
-        const project = await Project.findById(id)
-
-        // check if userId of voted user is already present in the collection 
-        const alreadyDownVoted = project.votes.find((voted) => voted.userId.toString() === userId.toString())
-        if (alreadyDownVoted) {
-            if (alreadyDownVoted.hasVoted == true) {
-                alreadyDownVoted.hasVoted = false
-                await project.save()
-                return res.status(201).json({ message: 'Project DownVoted' })
-            }
-            else {
-                return res.status(400).json({ message: 'You have already downVoted this project.' })
-            }
-        }
-        // add new vote to votes array and update it on database
-        project.votes.push({ userId, hasVoted: false })
-        await project.save()
-        res.status(201).json({ message: 'Project DownVoted' })
-    }
-    catch(error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
 exports.commentProject = async(req, res)=>{
     try{
         // parse projectId as id from url
