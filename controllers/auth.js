@@ -89,7 +89,7 @@ exports.loginUser = async (req, res) => {
     res.cookie("sessionId", req.sessionID, {
       httpOnly: true,
       // other cookie option(s)
-    });
+    })
 
     console.log('Login: Login successful')
 
@@ -120,4 +120,4 @@ exports.logoutUser = (req, res) => {
     res.clearCookie("sessionId")
   
     res.status(200).json({ message: "Logout successful" })
-  };
+}

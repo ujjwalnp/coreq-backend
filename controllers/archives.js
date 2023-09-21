@@ -18,6 +18,7 @@ exports.createArchive = async(req, res)=>{
             userId: userId,
             userFullName: user.fullName,
             username: user.username,
+            profilePic: user.profilePic,
             title,
             collabrators,
             team,
@@ -58,7 +59,6 @@ exports.getUserArchives = async(req, res)=>{
     // parse userId from url
     const userId = req.params.userId
 
-    console.log(userId)
     try {
         // get the archive(s) of specific userId
         const archives = await Archive.find({ userId }).sort({ createdAt: -1 }).exec()

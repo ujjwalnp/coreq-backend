@@ -6,44 +6,6 @@ const Archive = require('../models/Archive')
 const Project = require('../models/Project')
 
 /* CREATE API */
-// Save Article/Project/Archive/Query
-exports.savePost = async(req, res) => {
-    try {
-        // parse postId as id from url
-        const { id } = req.params
-
-        // parse userId from body
-        const { userId } = req.body
-        
-        // find user of specfic userId
-        const user = await User.findById(userId)
-
-        // check post is already present in collection
-        const alreadySaved = user.savedPost.find((post) => post.postId.toString() === id.toString())
-        console.log(alreadySaved)
-        
-       // if alreadySaved then unsave the post
-       if (alreadySaved) {
-        // Remove the post from savedPost array using `pull` method
-        user.savedPost.pull(alreadySaved._id)
-        await user.save()
-        return res.status(200).json({ message: 'Post Unsaved successfully' })
-    }
-
-        // if !alreadySaved then save the post, create a new savedPost object
-        const savedPostObject = {
-            postId: id,
-        }
-
-        // push the savePostObject to user's savePost array
-        user.savedPost.push(savedPostObject)
-        await user.save()
-        return res.status(201).json({ message: "Post Saved Successfully" })
-    }
-    catch (error) {
-        res.status(404).json({ message: error.message })
-    }
-}
 
 // Follow / Unfollw Feature
 exports.followUser = async(req, res) => {
@@ -68,13 +30,13 @@ exports.followUser = async(req, res) => {
         if (alreadyFollows) {
             if (alreadyFollows.isFollowing){
                 // If already follows, update the isFollwing value to false
-                alreadyFollows.isFollowing = false;
+                alreadyFollows.isFollowing = false
                 await user.save()
                 return res.status(200).json({ isFollowing: false, message: 'User UnFollowed successfully' })
             }
             else {
                 // Update the isFollowing value to true
-                alreadyFollows.isFollowing = true;
+                alreadyFollows.isFollowing = true
                 await user.save()
                 return res.status(200).json({ isFollowing: true, message: 'User followed successfully' })
             }
@@ -87,8 +49,8 @@ exports.followUser = async(req, res) => {
         }
     
         // Push the following object to the user's following array
-        user.following.push(followingObject);
-        await user.save();
+        user.following.push(followingObject)
+        await user.save()
 
         res.status(200).json({ isFollowing: true, message: 'User followed successfully' })
     }
@@ -105,24 +67,6 @@ exports.getAllUsers = async(req, res) => {
         res.status(200).json(users)
     }
     catch(error){
-        res.status(404).json({ message: error.message })
-    }
-}
-
-exports.countSavedPosts = async(req, res) => {
-    try {
-        // parse userId from url
-        const { userId } = req.params
-
-        // find the user with the specific userId
-        const user = await User.findById(userId)
-
-        // count the number of saved posts for the user
-        const count = user.savedPost.length
-
-        res.status(200).json({ count })
-    }
-    catch (error) {
         res.status(404).json({ message: error.message })
     }
 }
@@ -162,7 +106,6 @@ exports.getUserSavedPosts = async (req, res) => {
 
         // Get the user's saved post IDs
         const savedPostIds = user.savedPost
-        console.log(savedPostIds)
 
         // Create an empty array to store the retrieved post details
         const savedPostsDetails = []
@@ -188,7 +131,7 @@ exports.getUserSavedPosts = async (req, res) => {
                         // Handle the case where a saved post is not found
                         // This can happen if a post was deleted or there's an issue with the savedPosts array
                         // You can choose to skip it or handle it differently based on your use case
-                        console.log('No matching document was found in collection')
+                        console.log('users>>getUserSavedPost: No matching document was found in collection')
                         continue
                     }
                 }
@@ -207,7 +150,7 @@ exports.getUserSavedPosts = async (req, res) => {
 
 exports.getUserFollowings = async(req, res) => {
     try {
-        const userId = new mongoose.Types.ObjectId(req.params.userId)
+        const { userId } = req.params
 
         const user = await User.findById(userId)
 
@@ -217,73 +160,25 @@ exports.getUserFollowings = async(req, res) => {
 
         // Get an array of followingIds with isFollowing === true
         const followingIds = user.following
-        .filter((following) => following.isFollowing)
-        .map((following) => following.followingId);
+        .filter((following) => following.isFollowing === true)
+        .map((following) => following.followingId)
 
         // Get the count of followingIds
-        const followingCount = followingIds.length;
+        const followingCount = followingIds.length
 
         // Fetch the details of followingIds from the User collection
         const followingDetails = await User.find(
             { _id: { $in: followingIds } },
             'username fullName'
-        );
+        )
 
-        res.status(200).json({ followingDetails, followingCount });
+        res.status(200).json({ followingDetails, followingCount })
     }
     catch (error) {
         res.status(404).json({ message: error.message })
     }
 }
 
-exports.isFollowing = async(req, res) => {
-    try {
-        const userId = new mongoose.Types.ObjectId(req.params.userId)
-        const followingId = new mongoose.Types.ObjectId(req.body.followingId)
-
-        const user = await User.findById(userId)
-  
-        if (!user) {
-          return res.status(404).json({ message: 'User not found' })
-        }
-
-        const isFollowing = user.following.find((following) => following.followingId.toString() === followingId.toString())
-
-        if (isFollowing) {
-            if (isFollowing.isFollowing) {
-                return res.status(200).json({ isFollowing: true })
-            }
-            else {
-                return res.status(200).json({ isFollowing: false })
-            }
-        }
-
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-}
-
-exports.isFollower = async (req, res) => {
-    try {
-      const userId = new mongoose.Types.ObjectId(req.params.userId)
-      const followingId = new mongoose.Types.ObjectId(req.body.followingId)
-  
-      const user = await User.findById(followingId)
-  
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' })
-      }
-  
-      const isFollower = user.following.some(
-        (following) => following.followingId.toString() === userId.toString()
-      )
-  
-      res.status(200).json({ isFollower })
-    } catch (error) {
-      res.status(500).json({ message: error.message })
-    }
-}
-  
 exports.getUserFollowers = async (req, res) => {
     try {
       const userId = new mongoose.Types.ObjectId(req.params.userId)
@@ -312,6 +207,43 @@ exports.getUserFollowers = async (req, res) => {
 }
 
 /* UPDATE API */
+exports.savePost = async(req, res) => {
+  try {
+      // parse postId as id from url
+      const { id } = req.params
+
+      // parse userId from body
+      const { userId } = req.body
+      
+      // find user of specfic userId
+      const user = await User.findById(userId)
+
+      // check post is already present in collection
+      const alreadySaved = user.savedPost.find((post) => post.postId.toString() === id.toString())
+      
+     // if alreadySaved then unsave the post
+     if (alreadySaved) {
+      // Remove the post from savedPost array using `pull` method
+      user.savedPost.pull(alreadySaved._id)
+      await user.save()
+      return res.status(200).json({ message: 'Post Unsaved successfully' })
+  }
+
+      // if !alreadySaved then save the post, create a new savedPost object
+      const savedPostObject = {
+          postId: id,
+      }
+
+      // push the savePostObject to user's savePost array
+      user.savedPost.push(savedPostObject)
+      await user.save()
+      return res.status(201).json({ message: "Post Saved Successfully" })
+  }
+  catch (error) {
+      res.status(404).json({ message: error.message })
+  }
+}
+
 exports.editProfile = async (req, res) => {
     // Parse userId from the URL
     const userId = new mongoose.Types.ObjectId(req.params.userId)

@@ -15,6 +15,7 @@ exports.createQuery = async(req, res)=>{
             userId: userId,
             userFullName: user.fullName,
             username: user.username,
+            profilePic: user.profilePic,
             title,
             description,
             votes: [],
@@ -51,7 +52,6 @@ exports.getUserQueries = async(req, res)=>{
     // parse userId from url
     const userId = req.params.userId
 
-    console.log(userId)
     try {
         // get the query(s) of specific userId
         const queries = await Query.find({ userId }).sort({ createdAt: -1 }).exec()

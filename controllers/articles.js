@@ -18,6 +18,7 @@ exports.createArticle = async(req, res)=>{
             userId: userId,
             userFullName: user.fullName,
             username: user.username,
+            profilePic: user.profilePic,
             title,
             description,
             authors,

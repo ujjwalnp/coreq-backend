@@ -10,8 +10,6 @@ router
     .get('/get/:userId/savedPost', verifyToken, userController.getUserSavedPosts)
     .get('/get/:userId/followings', verifyToken, userController.getUserFollowings)
     .get('/get/:userId/followers', verifyToken, userController.getUserFollowers)
-    .get('/get/:userId/isFollower', verifyToken, userController.isFollower)
-    // .get('/get/:userId/count/savedPost', verifyToken, userController.countSavedPosts)
 
 /* FOLLOW USER */
     .post('/follow/:userId', verifyToken, userController.followUser)

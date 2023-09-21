@@ -1,9 +1,7 @@
-const mongoose = require("mongoose");
-const User = require("../models/User");
-const Archive = require("../models/Archive");
-const Article = require("../models/Article");
-const Project = require("../models/Project");
-const Query = require("../models/Query");
+const Archive = require("../models/Archive")
+const Article = require("../models/Article")
+const Project = require("../models/Project")
+const Query = require("../models/Query")
 
 /* CREATE */
 /* READ */
@@ -41,24 +39,24 @@ exports.upVotePost = async (req, res) => {
     // check if userId of voted user is already present in the collection
     const alreadyUpVoted = post.votes.find(
       (voted) => voted.userId.toString() === userId.toString()
-    );
+    )
     if (alreadyUpVoted) {
       if (alreadyUpVoted.hasVoted == true) {
         return res
           .status(400)
-          .json({ message: "You have already upVoted this post." });
+          .json({ message: "You have already upVoted this post." })
       } else {
-        alreadyUpVoted.hasVoted = true;
-        await post.save();
-        return res.status(201).json({ message: "Post UpVoted" });
+        alreadyUpVoted.hasVoted = true
+        await post.save()
+        return res.status(201).json({ message: "Post UpVoted" })
       }
     }
     // add new vote to votes array and update it on database
-    post.votes.push({ userId, hasVoted: true });
-    await post.save();
-    res.status(201).json({ message: "Post UpVoted" });
+    post.votes.push({ userId, hasVoted: true })
+    await post.save()
+    res.status(201).json({ message: "Post UpVoted" })
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(404).json({ message: error.message })
   }
 }
 
@@ -67,7 +65,7 @@ exports.downVotePost = async (req, res) => {
     const { id } = req.params
     const { userId } = req.body
 
-    let post;
+    let post
     // find post of specfic id
     const archive = await Archive.findById(id)
     if (archive) {

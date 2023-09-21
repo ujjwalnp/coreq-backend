@@ -38,6 +38,9 @@ const articleSchema = new Schema({
         type: String,
         required: true,
     },
+    profilePic: {
+        type: String,
+    },
     title: {
         type: String,
         required: true,
