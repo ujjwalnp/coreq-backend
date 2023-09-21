@@ -129,22 +129,26 @@ exports.countSavedPosts = async(req, res) => {
 
 exports.getUserDetails = async(req, res) => {
     // parse userId from url
-    const userId = new mongoose.Types.ObjectId(req.params.userId)
+    const { userId } = req.params
 
     try {
-        // get the user of specific userId
-        const user = await User.findById(userId).select('-password')
+        let user
+        
+        // Check if userId looks like an ObjectId (24-character hexadecimal)
+        if (/^[0-9a-fA-F]{24}$/.test(userId)) {
+            user = await User.findOne({ _id: userId }).select('-password')
+        } else {
+            user = await User.findOne({ username: userId }).select('-password')
+        }
 
         if (!user) {
             // If no user found with the given userId, return a 404 response
-            return res.status(404).json({ message: 'User not found' });
-          }
+            return res.status(404).json({ message: 'User not found' })
+        }
 
-          
         res.status(200).json(user)
-    }
-    catch(error) {
-        res.status(404).json({ message: error.message })
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' })
     }
 }
 
@@ -325,16 +329,22 @@ exports.editProfile = async(req, res) => {
             user.username = req.body.username
         }
 
-        // Update profile picture if available and not empty/whitespace
-        if (req.body.profilePic && req.body.profilePic.trim() !== '') {
-            user.profilePic = req.body.profilePic
+        // Path of profilePic & coverpic
+        const profilePicPath = req.file.path
+        console.log(profilePicPath)
+
+        // Handle profile picture upload
+        if (req.file && req.file.fieldname === 'profilePic') {
+            // Assuming you store the file path in req.file.path
+            user.profilePic = req.file.path
         }
-    
-        // Update cover picture if available and not empty/whitespace
-        if (req.body.coverPic && req.body.coverPic.trim() !== '') {
-            user.coverPic = req.body.coverPic
+
+        // Handle cover picture upload
+        if (req.file && req.file.fieldname === 'coverPic') {
+            // Assuming you store the file path in req.file.path
+            user.coverPic = req.file.path
         }
-    
+
         // Update full name if available and not empty/whitespace
         if (req.body.fullName && req.body.fullName.trim() !== '') {
             user.fullName = req.body.fullName
