@@ -46,7 +46,7 @@ exports.createProject = async(req, res)=>{
 exports.getAllProjects = async(req, res)=>{
     try {
         // get all the projects from database
-        const projects = await Project.find().sort({ updatedAt: -1 }).exec()
+        const projects = await Project.find().sort({ createdAt: -1 }).exec()
         res.status(200).json(projects)
     }
     catch(error) {
@@ -61,7 +61,7 @@ exports.getUserProjects = async(req, res)=>{
     console.log(userId)
     try {
         // get the project(s) of specific userId
-        const projects = await Project.find({ userId }).sort({ updatedAt: -1 }).exec()
+        const projects = await Project.find({ userId }).sort({ createdAt: -1 }).exec()
         res.status(200).json(projects)
     }
     catch(error) {

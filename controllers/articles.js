@@ -47,7 +47,7 @@ exports.createArticle = async(req, res)=>{
 exports.getAllArticles = async(req, res)=>{
     try {
         // get all the articles from database
-        const articles = await Article.find().sort({ updatedAt: -1 }).exec()
+        const articles = await Article.find().sort({ createdAt: -1 }).exec()
         res.status(200).json(articles)
     }
     catch(error) {
@@ -61,7 +61,7 @@ exports.getUserArticles = async(req, res)=>{
 
     try {
         // get the article(s) of specific userId
-        const articles = await Article.find({ userId }).sort({ updatedAt: -1 }).exec()
+        const articles = await Article.find({ userId }).sort({ createdAt: -1 }).exec()
         res.status(200).json(articles)
     }
     catch(error) {

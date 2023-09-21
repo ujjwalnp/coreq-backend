@@ -46,7 +46,7 @@ exports.createArchive = async(req, res)=>{
 exports.getAllArchives = async(req, res)=>{
     try {
         // get all the archives from database
-        const archives = await Archive.find().sort({ updatedAt: -1 }).exec()
+        const archives = await Archive.find().sort({ createdAt: -1 }).exec()
         res.status(200).json(archives)
     }
     catch(error) {
@@ -61,7 +61,7 @@ exports.getUserArchives = async(req, res)=>{
     console.log(userId)
     try {
         // get the archive(s) of specific userId
-        const archives = await Archive.find({ userId }).sort({ updatedAt: -1 }).exec()
+        const archives = await Archive.find({ userId }).sort({ createdAt: -1 }).exec()
         res.status(200).json(archives)
     }
     catch(error) {

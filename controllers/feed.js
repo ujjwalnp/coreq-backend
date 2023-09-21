@@ -36,7 +36,7 @@ exports.getFeed = async(req, res)=>{
         let feed = [...articles, ...archives, ...projects, ...queries]
 
         // sorting array according to timestamp
-        feed.sort((a,b) => b.updatedAt - a.updatedAt)
+        feed.sort((a,b) => b.createdAt - a.createdAt)
 
         // sending response
         res.status(200).json(feed)
