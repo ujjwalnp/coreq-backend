@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/users')
 const { verifyToken } = require('../middlewares/auth')
+const { handleProfileAndCoverPics } = require('../middlewares/fileUpload')
 
 router
 /* GET USERDETAILS */
@@ -20,6 +21,6 @@ router
     // Save Posts
     .patch('/savePost/:id', verifyToken, userController.savePost) 
     // editProfile
-    .patch('/editProfile/:userId', verifyToken, userController.editProfile)
+    .patch('/editProfile/:userId', verifyToken, handleProfileAndCoverPics, userController.editProfile)
 
 exports.router = router 
