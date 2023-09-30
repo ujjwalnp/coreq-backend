@@ -4,6 +4,7 @@ const User = require('../models/User')
 const Article = require('../models/Article')
 const Archive = require('../models/Archive')
 const Project = require('../models/Project')
+const Query = require('../models/Query')
 
 /* CREATE API */
 
@@ -128,11 +129,16 @@ exports.getUserSavedPosts = async (req, res) => {
                     if (projectPost) {
                         postDetails = { type: 'Project', details: projectPost }
                     } else {
+                        const queryPost = await Query.findById(postId)
+                        if (queryPost) {
+                            postDetails = { type: 'Query', details: queryPost }
+                        } else {
                         // Handle the case where a saved post is not found
                         // This can happen if a post was deleted or there's an issue with the savedPosts array
                         // You can choose to skip it or handle it differently based on your use case
                         console.log('users>>getUserSavedPost: No matching document was found in collection')
                         continue
+                        }
                     }
                 }
             }
@@ -214,7 +220,7 @@ exports.savePost = async(req, res) => {
 
       // parse userId from body
       const { userId } = req.body
-      
+
       // find user of specfic userId
       const user = await User.findById(userId)
 
@@ -287,7 +293,17 @@ exports.editProfile = async (req, res) => {
       if (req.body.batch && !isNaN(req.body.batch)) {
         user.batch = Number(req.body.batch)
       }
-  
+
+      // Update rollNo if available and not empty/whitespace
+      if (req.body.rollNo && !isNaN(req.body.rollNo)) {
+        user.rollNo = Number(req.body.rollNo)
+      }
+
+      // Update location if available and not empty/whitespace
+      if (req.body.location && req.body.location.trim() !== '') {
+        user.location = req.body.location
+      }
+
       // Update faculty if available and not empty/whitespace
       if (req.body.faculty && req.body.faculty.trim() !== '') {
         user.faculty = req.body.faculty
