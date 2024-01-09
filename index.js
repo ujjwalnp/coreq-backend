@@ -12,6 +12,8 @@ const featureRouter = require('./routes/features')
 const cors = require("cors")
 const session = require("express-session")
 const cookieParser = require("cookie-parser")
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger-output.json')
 
 /* EXPRESS SERVER  */
 const server = express()
@@ -60,6 +62,7 @@ server.get("/test", (req, res) => {
 
 /* ROUTES */
 server.use(cors())
+server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 server.use("/auth", authRouter.router)
 server.use('/article', artcileRouter.router)
 server.use('/project', projectRouter.router)
@@ -70,6 +73,6 @@ server.use('/feed', feedRouter.router)
 server.use('/feature', featureRouter.router)
 
 /* SERVER LISTEN */
-server.listen(process.env.SERVER_PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log("Server Started")
 })
