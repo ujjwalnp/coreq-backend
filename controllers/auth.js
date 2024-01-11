@@ -77,19 +77,10 @@ exports.loginUser = async (req, res) => {
       return res.status(401).json({ message: "Login: Invalid password" })
     }
 
-    // Create a session and store the user ID in the session
-    req.session.userId = user._id
-
     const token = jwt.sign(
       { id: user.userId, username: user.username, password: user.password },
       process.env.JWT_SECRET
     )
-
-    // Set the session ID as a cookie
-    res.cookie("sessionId", req.sessionID, {
-      httpOnly: true,
-      // other cookie option(s)
-    })
 
     console.log('Login: Login successful')
 
