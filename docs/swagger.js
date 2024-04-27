@@ -11,14 +11,14 @@ const doc = {
 
 const outputFile = './swagger-output.json'
 const routes = [
-    './routes/auth.js',
-    './routes/archives.js',
-    './routes/articles.js',
-    './routes/features.js',
-    './routes/feed.js',
-    './routes/projects.js',
-    './routes/queries.js',
-    './routes/users.js',
+    '../routes/auth.js',
+    '../routes/archives.js',
+    '../routes/articles.js',
+    '../routes/features.js',
+    '../routes/feed.js',
+    '../routes/projects.js',
+    '../routes/queries.js',
+    '../routes/users.js',
 ]
 
 swaggerAutogen(outputFile, routes, doc)

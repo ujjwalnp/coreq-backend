@@ -3,7 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const swaggerUi = require('swagger-ui-express')
-const swaggerDocument = require('./swagger-output.json')
+const swaggerDocument = require('./docs/swagger-output.json')
 
 const authRouter = require('./routes/auth')
 const artcileRouter = require('./routes/articles')
